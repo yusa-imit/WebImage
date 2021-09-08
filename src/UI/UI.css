@@ -1,0 +1,45 @@
+.App {
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+    overflow:visible;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+.Main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position:relative;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    background-image: linear-gradient();
+}
+
+.Mainframe{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    margin: 10px;
+    background: rgba( 0, 0, 0, 0.50 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 100, 0.3 );
+    backdrop-filter: blur( 3.0px );
+    -webkit-backdrop-filter: blur( 3.0px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.MainFunction{
+    position: relative;
+    height: calc(100% - 20px);
+    width: 100%;
+}
+
