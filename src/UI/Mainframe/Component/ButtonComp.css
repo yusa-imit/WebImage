@@ -1,0 +1,25 @@
+.button-comp{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border-width: 1.5px;
+    border-style: solid;
+    border-color: oldlace;
+    z-index: 20;
+    background-image: linear-gradient(rgba(0,0,0,0.0) 0 0);
+    transition: background-image 2s ease-in-out;
+}
+.button-comp-text{
+    margin: 3px 6px 3px 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-comp:active{
+    background-image: linear-gradient(rgba(0,0,0,0.4) 0 0);
+    transition: background-image 2s ease-in-out;
+}

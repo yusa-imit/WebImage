@@ -75,6 +75,7 @@
     "json-loader": "^0.5.7",
     "node-loader": "^2.0.0",
     "py-loader": "^0.3.1",
+    "redux-logger": "^3.0.6",
     "style-loader": "^2.0.0"
   },
   "dependencies": {
@@ -82,13 +83,23 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "electron-acrylic-window": "^0.5.5",
+    "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.0.0",
+    "image-conversion": "^2.1.1",
+    "image-size": "^1.0.0",
     "particles-bg": "^2.5.5",
     "react": "^17.0.2",
     "react-custom-scrollbars-2": "^4.4.0",
+    "react-delay-input": "^4.1.0",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1",
+    "redux-persist": "^6.0.0",
+    "redux-persist-electron-storage": "^2.1.0",
     "sass": "^1.35.1",
     "sass-loader": "^12.1.0",
+    "use-state-with-callback": "^2.0.3",
     "webpack": "^5.41.0"
   }
 }

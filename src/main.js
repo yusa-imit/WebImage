@@ -1,6 +1,7 @@
 const { app, screen, remote} = require('electron');
 const path = require('path');
-const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
+//const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
+const {BrowserWindow} = require('electron')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -17,20 +18,23 @@ const createWindow = () => {
     frame:false,
     transparent:true,
     resizable:true,
-    vibrancy:{theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false},
+    //vibrancy:{theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false},
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      webSecurity:false,
     }
   });
-  mainWindow.setVibrancy({theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false})
+  //mainWindow.setVibrancy({theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false})
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
 };
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

@@ -1,12 +1,27 @@
 import React, { useRef, useState } from 'react';
 import './TrafficLights.css';
+
+//
+// TrafficLights.jsx
+//
+// Program Top bar component
+// props : none
 export default function TrafficLights(props){
+  //useRef for maximize function
   const maximize = useRef();
+  // state: isMaximized 
+  // dummy
   const [isMaximized, setIsMaximized] = useState(false);
+  
+  // Get Remote from Electron
   let win = null;
   const {remote} = require('electron')
   win = () => remote.BrowserWindow.getFocusedWindow()
+
+  // Minimize Handler
   const handlerMin = () => win().minimize();
+
+  // Maximize Handler
   const handlerMax = () => {
     console.log('handlerMaxclick')
     if (win().isMaximized() === false) {
@@ -26,6 +41,7 @@ export default function TrafficLights(props){
     }
   };
 
+  // Close Handler
   const handlerClose = () => win().close();
 
   return (
