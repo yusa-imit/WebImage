@@ -1,20 +1,16 @@
 import React from 'react'
-import sharp from 'sharp'
 import './ImageToWebp.css'
+//import sharp from 'sharp'
 
 export default function ImageToWebp(props){
+    const availableFormat = ['jpeg', 'png','webp', 'avif','tiff', 'gif', 'heif']
+    const sharp = require('sharp');
     return (
         <>
-            
+            <div></div>
         </>
     )
 }
 
-const availableFormat = ['jpeg', 'png','webp', 'avif','tiff', 'gif', 'heif']
 
-function sharpConvert(file, format){
-    const data = await sharp(file)
-    .toFormat(format)
-    .toFile();
-    return data;
-}
+

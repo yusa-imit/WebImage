@@ -1,5 +1,6 @@
 const { app, screen, remote} = require('electron');
 const path = require('path');
+require('sharp')
 //const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
 const {BrowserWindow} = require('electron')
 

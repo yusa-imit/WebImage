@@ -6,6 +6,8 @@ import ImageOptimizer from "./Mainframe/ImageOptimizer.jsx";
 import ParticlesBg from "particles-bg";
 import { useSelector } from "react-redux";
 import { get, set, getSync, setSync } from './settings.js';
+import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
+//import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 
 //
 // UI.jsx
@@ -64,7 +66,7 @@ export default function UI(props) {
           </div>
           <LeftMenu buttonState={buttonState} changeButtonState={(num)=>{changeButtonState(num)}}/>
           <div className='Mainframe'>
-            <ImageOptimizer/>
+            <ImageToWebp/>
           </div>
 
         </div>
