@@ -1,7 +1,12 @@
 const { app, screen, remote} = require('electron');
 const path = require('path');
+
+// Library 'sharp' need to included when main process started
+// It's component stacked in memory and become ready-to-use
 require('sharp')
-//const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
+
+// [Deprecated]
+// const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
 const {BrowserWindow} = require('electron')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
