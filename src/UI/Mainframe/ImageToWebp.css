@@ -1,0 +1,60 @@
+.mainframe-wrapper{
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+}
+
+.webp-wrapper{
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+}
+
+.webp-image-div{
+    height: calc(50% - 40px);
+    width : calc(100% - 40px);
+    padding: 10px;
+    margin : 10px;
+    display: grid;
+    background-color: transparent;
+    border: oldlace solid 1.5px;
+    border-radius: 5px;
+    color: oldlace;
+}
+
+.drag-and-drop-area{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.webp-button-wrapper{
+    height: calc(20% - 40px);
+    width : calc(100% - 40px);
+    padding: 10px;
+    margin : 10px;
+    display: grid;
+    grid-template-columns: 22% 22% 22% 22%;
+    grid-template-rows: 45% 45%;
+    row-gap: 10%;
+    column-gap: 4%;
+}
+
+.webp-button-wrapper .button-container{
+    height: 50%;
+    width: 25%;
+}
+
+.webp-image-container{
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
