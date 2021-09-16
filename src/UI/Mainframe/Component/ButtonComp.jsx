@@ -3,8 +3,9 @@ import './ButtonComp.css';
 
 export default function ButtonComp(props){
     const bg = props.backgroundColor===undefined?'transparent':props.backgroundColor;
+    const textColor = props.textColor===undefined?'#000000':props.textColor;
     return(<>
-        <div className='button-comp' style={{backgroundColor:bg}} onClick={()=>{props.handleClick()}}>
+        <div className='button-comp' style={{backgroundColor:bg, color:textColor}} onClick={()=>{props.handleClick()}}>
             <div className='button-comp-text'>
                 <h4>
                     {props.text}
