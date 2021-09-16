@@ -5,7 +5,9 @@ export default function ImageViewer(props){
     const [show, setShow] = useState(false)
     return(
         <>
-            <img src={img}/>
+            <div className='image-viewer-container'>
+                <img className='image-viewer' src={props.file}/>
+            </div>
         </>
     )
 }

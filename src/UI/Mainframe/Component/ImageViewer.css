@@ -1,0 +1,12 @@
+.image-viewer-container{
+    height: calc(5vw + 12vh - 10px);
+    width: fit-content;
+    display: flex;
+    padding: 5px;
+}
+
+.image-viewer{
+    height: 100%;
+    width:auto;
+    object-fit: contain;    
+}
