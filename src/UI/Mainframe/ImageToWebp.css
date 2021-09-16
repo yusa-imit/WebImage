@@ -58,3 +58,50 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+.webp-result{
+    height: calc(30% - 40px);
+    width : calc(100% - 40px);
+    padding: 10px;
+    margin : 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.webp-result .target-dest{
+    height: calc(30%);
+    width: 100%;
+    z-index: 20;
+}
+
+.webp-result .progress-bar{
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: oldlace;
+}
+
+.progress-bar-comp{
+    color: oldlace;
+    font-weight: 700;
+}
+
+.webp-result .convert-button{
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+}
+
+.webp-result .convert-button .button-wrapper{
+    height: 100%;
+    width: 40%;
+    z-index: 20;
+}
