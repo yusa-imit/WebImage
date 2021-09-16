@@ -69,7 +69,7 @@ export default function TrafficLights(props){
     </div>
     </div>
       <span className='program-title-text'>
-        Nozomi.la Crawler
+        WEB IMAGE
       </span>
     </div>
     </>
