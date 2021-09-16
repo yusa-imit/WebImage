@@ -33,6 +33,7 @@ export function sharpConvertAndExport(file, format, targetDest, setInfo, increas
             .then(info=>{
                 //console.log(info)
                 setInfo(prevInfo => ({...prevInfo, file: info}))
+                increaseProgress()
             })
             .catch(e=>{console.log(e)})
             //info contains
@@ -40,5 +41,4 @@ export function sharpConvertAndExport(file, format, targetDest, setInfo, increas
             
         }
     )
-    increaseProgress()
 }
