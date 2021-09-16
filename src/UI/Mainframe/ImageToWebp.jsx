@@ -6,8 +6,10 @@ import ButtonComp from './Component/ButtonComp.jsx'
 import Scrollbars from 'react-custom-scrollbars'
 import ImageViewer from './Component/ImageViewer.jsx'
 import FileNameComp from './Component/FileNameComp.jsx'
+/*
 import { Progress } from 'react-sweet-progress';
-import "react-sweet-progress/lib/style.css";
+import "./progressStyle.css";*/
+import {Provider, defaultTheme, ProgressBar} from '@adobe/react-spectrum';
 
 export default function ImageToWebp(props) {
     const [info, setInfo] = useState([]);
@@ -105,7 +107,7 @@ export default function ImageToWebp(props) {
                             <div className='webp-image-container'>
                                 {
                                     files.map((file, index) => (
-                                        <ImageViewer file={file} key={index} />
+                                        <ImageViewer file={file} key={index} info={info[file]} />
                                     ))
                                 }
                             </div>
@@ -125,11 +127,9 @@ export default function ImageToWebp(props) {
                         </div>
                         <div className='progress-bar'>
                             <h5 style={{ marginRight: '20px' }}>Progress</h5>
-                            <Progress symbolClassName={'progress-bar-comp'} percent={files.length === 0 ? 0 : ((progress / files.length) * 100).toFixed(0)} theme={{
-                                active: {
-                                    color: '#fdf5e6',
-                                }
-                            }} />
+                            <Provider theme={defaultTheme} UNSAFE_style={{backgroundColor:'transparent', display:'flex', justifyContent:'center', alignItems:'center'}}  width='80%' scale='large' backgroundColor='transparent'>
+                                <ProgressBar size='L' label='' showValueLabel={true} width='100%' backgroundColor='#fdf5e6' labelPosition='side' value={files.length === 0 ? 0 : ((progress / files.length) * 100).toFixed(0)} />
+                            </Provider>
                         </div>
                         <div className='convert-button'>
                             <div className='button-wrapper'>
@@ -165,7 +165,7 @@ export default function ImageToWebp(props) {
                                 if (formatConfirm(f)) {
                                     if (files.includes(f))
                                         return;
-                                    setFiles([...files, f]);
+                                        setFiles(prevfiles => [...prevfiles, f]);
                                 }
                             }
                         })
