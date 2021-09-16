@@ -6,9 +6,6 @@ import ButtonComp from './Component/ButtonComp.jsx'
 import Scrollbars from 'react-custom-scrollbars'
 import ImageViewer from './Component/ImageViewer.jsx'
 import FileNameComp from './Component/FileNameComp.jsx'
-/*
-import { Progress } from 'react-sweet-progress';
-import "./progressStyle.css";*/
 import {Provider, defaultTheme, ProgressBar} from '@adobe/react-spectrum';
 
 export default function ImageToWebp(props) {
