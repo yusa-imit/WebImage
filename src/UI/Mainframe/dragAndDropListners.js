@@ -2,6 +2,7 @@ export const dropEventListener=(e, func=()=>{})=>{
     e.preventDefault();
     e.stopPropagation();
     for(const f of e.dataTransfer.files){
+        console.log(f.path)
         func(f.path);
     }
 }
