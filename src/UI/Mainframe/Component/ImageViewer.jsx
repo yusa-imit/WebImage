@@ -6,7 +6,7 @@ export default function ImageViewer(props){
     return(
         <>
             <div className='image-viewer-container'>
-                <img className='image-viewer' src={props.file}/>
+                <img className='image-viewer' src={props.file} onLoad={console.log(props.file)}/>
             </div>
         </>
     )
