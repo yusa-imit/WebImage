@@ -49,11 +49,30 @@ export default function UI(props) {
   }
   // State: buttonState
   // controls leftmenu buttons
-  const [buttonState, setButtonState] = useState([false, false, false, false]);
-  const changeButtonState = (num) =>{
+  const [buttonState, setButtonState] = useState([true, false, false, false]);
+  const changeButtonState = (num=undefined) =>{
+    console.log(num);
     var defaultState = [false, false, false, false];
-    defaultState[num] = true;
-    setButtonState([defaultState]);
+    if(num!==undefined){
+      defaultState[num] = true;
+      setButtonState(defaultState)
+    }
+    else{
+      defaultState[0] = true;
+      setButtonState(defaultState);
+    }
+    console.log(buttonState)
+  }
+
+  const mainframeSetter = () =>{
+    switch (buttonState.indexOf(true)){
+      case 0:
+        return <ImageOptimizer/>
+      case 1:
+        return <ImageToWebp/>
+      default:
+        return <ImageOptimizer/>
+    }
   }
   setSync('test', true);
   return (
@@ -66,7 +85,7 @@ export default function UI(props) {
           </div>
           <LeftMenu buttonState={buttonState} changeButtonState={(num)=>{changeButtonState(num)}}/>
           <div className='Mainframe'>
-            <ImageToWebp/>
+            {mainframeSetter()}
           </div>
 
         </div>
