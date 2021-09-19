@@ -88,6 +88,8 @@ typings/
 # Electron-Forge
 out/
 
+# Test Perpose
 dist/
 
-./UI/lib-asshole/
+# Personal rule
+src/UI/lib-asshole/
