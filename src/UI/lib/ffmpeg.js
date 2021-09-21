@@ -59,7 +59,7 @@ function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{
         onStderr(err);
     })
     .on('progress', (progress)=>{
-        onProgress()
+        onProgress(progress)
     })
     .save(saveDir)
 }
