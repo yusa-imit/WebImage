@@ -12,9 +12,16 @@ const path = require('path');
  * FFMPEG Path setting
  * For default, fluent-ffmpeg needs ffmpeg library's path information as PATH os env virables
  * These lines set FFMPEG path into project-shared library
+ * refers https://alexandercleasby.dev/blog/use-ffmpeg-electron
  */
-const ffmpeg_path = path.join(__dirname,'/ffmpeg4.4/bin/ffmpeg.exe');
-const ffprobe_path = path.join(__dirname,'/ffmpeg4.4/bin/ffprobe.exe');
+//const ffmpeg_path = path.join(__dirname,'/ffmpeg4.4/bin/ffmpeg.exe');
+//const ffprobe_path = path.join(__dirname,'/ffmpeg4.4/bin/ffprobe.exe');
+const ffmpeg_path = require('ffmpeg-static-electron').path;
+//const ffmpeg_path = require('electron').remote.getGlobal('ffmpegpath');
+console.log(ffmpeg_path);
+
+const ffprobe_path = require('ffprobe-static').path
+console.log(ffprobe_path)
 
 ffmpeg.setFfmpegPath(ffmpeg_path);
 ffmpeg.setFfprobePath(ffprobe_path);
@@ -70,7 +77,7 @@ function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{
  * @returns ::Promise::video metadata : Object
  */
 async function getMetaData (dir){
-    let meta = await getMetaData(dir);
+    let meta = await getMeta(dir);
     console.log(meta)
     return meta;
 }
@@ -88,12 +95,19 @@ function getMeta (dir){
  * @returns ::Promise:: ffmpeg's available asset informations:Object
  */
 async function getFfmpegAvailables (){
+    console.log(ffmpeg_path);
+    console.log(ffprobe_path)
     const formats = await getFormatAvailable()
+    console.log(formats);
     const codecs = await getCodecAvailable()
+    console.log(codecs);
     const encoders = await getEncoderAvailable()
+    console.log(encoders);
     const filters = await getFilterAvailable()
+    console.log(filters);
     return {'formats':formats, 'codecs':codecs, 'encoders':encoders, 'filters':filters}
 }
+
 
 function getFormatAvailable (){
     return new Promise((resolve, reject)=>{
@@ -128,4 +142,4 @@ function getFilterAvailable (){
 }
 
 
-export default {getMetaData, getFfmpegAvailables, ffmpegProcess}
+export {getMetaData, getFfmpegAvailables, ffmpegProcess}

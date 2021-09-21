@@ -7,6 +7,7 @@ import ParticlesBg from "particles-bg";
 import { useSelector } from "react-redux";
 import { get, set, getSync, setSync } from './settings.js';
 import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
+import VideoToWebm from "./Mainframe/VideoToWebm.jsx";
 //import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 
 //
@@ -51,7 +52,7 @@ export default function UI(props) {
   // controls leftmenu buttons
   const [buttonState, setButtonState] = useState([true, false, false, false]);
   const changeButtonState = (num=undefined) =>{
-    console.log(num);
+    //console.log(num);
     var defaultState = [false, false, false, false];
     if(num!==undefined){
       defaultState[num] = true;
@@ -61,7 +62,7 @@ export default function UI(props) {
       defaultState[0] = true;
       setButtonState(defaultState);
     }
-    console.log(buttonState)
+    //console.log(buttonState)
   }
 
   const mainframeSetter = () =>{
@@ -70,6 +71,8 @@ export default function UI(props) {
         return <ImageOptimizer/>
       case 1:
         return <ImageToWebp/>
+      case 2:
+        return <VideoToWebm/>
       default:
         return <ImageOptimizer/>
     }
