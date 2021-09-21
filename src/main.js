@@ -5,6 +5,8 @@ const path = require('path');
 // It's component stacked in memory and become ready-to-use
 require('sharp')
 
+//global.ffmpegpath = require('ffmpeg-static').replace('app.asar', 'app.asar.unpacked')
+
 // [Deprecated]
 // const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
 const {BrowserWindow} = require('electron')
