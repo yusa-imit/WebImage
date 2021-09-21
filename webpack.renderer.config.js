@@ -1,4 +1,6 @@
+const webpack = require('webpack');
 const rules = require('./webpack.rules');
+const ffmpegPath = require('ffmpeg-static').path;
 
 rules.push({
   test: /\.css$/,
@@ -11,5 +13,11 @@ module.exports = {
   },
   externals:{
     'sharp': 'commonjs sharp'
-  }
+  },
+  plugins:[
+    new webpack.DefinePlugin({
+      'process.env.FLUENTFFMPEG_COV': false
+    })
+  ],
+  //ffmpegPath:ffmpegPath
 };
