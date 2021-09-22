@@ -6,7 +6,7 @@ import ButtonComp from './Component/ButtonComp.jsx'
 import Scrollbars from 'react-custom-scrollbars'
 import ImageViewer from './Component/ImageViewer.jsx'
 import FileNameComp from './Component/FileNameComp.jsx'
-import {Provider, defaultTheme, ProgressBar} from '@adobe/react-spectrum';
+import { Line } from 'rc-progress'
 
 export default function ImageToWebp(props) {
     const [info, setInfo] = useState([]);
@@ -39,8 +39,8 @@ export default function ImageToWebp(props) {
     }
     const [drag, setDrag] = useState(false);
     const [progress, setProgress] = useState(0);
-    const increaseProgress = () =>{
-        setProgress(prevProg => prevProg+1);
+    const increaseProgress = () => {
+        setProgress(prevProg => prevProg + 1);
     }
     const [files, setFiles] = useState([]);
     //Only Image Variables
@@ -51,7 +51,7 @@ export default function ImageToWebp(props) {
             .then(
                 result => {
                     if (result.canceled === true) {
-                        
+
                     }
                     else {
                         for (var file of result.filePaths) {
@@ -84,9 +84,11 @@ export default function ImageToWebp(props) {
         sharpConvertAndExport(f, convertInto, target, setInfo, increaseProgress)
     }
     const convertAll = () => {
+        setWorking(true);
         for (var file of files) {
             convert(file);
         }
+
     }
     const initialize = () => {
         setInfo([]);
@@ -94,7 +96,26 @@ export default function ImageToWebp(props) {
         setProgress(0);
     }
     const scroll = useRef();
-    useEffect(() => { console.log(progress)}, [files, progress])
+    const [working, setWorking] = useState(false);
+    const setConvertButton = () => {
+
+        if (working) {
+            return (
+                <ButtonComp text={'PROCESSING'} backgroundColor={'#0f0f0f'} textColor={'#fdf5e6'} handleClick={() => { }} />
+            )
+        }
+        else {
+            return (
+                <ButtonComp text={'CONVERT'} backgroundColor={'#dc143c'} textColor={'#fdf5e6'} handleClick={() => { convertAll(); setProgress(0); }} />
+            )
+        }
+    }
+    useEffect(() => {
+        console.log(progress);
+        if (progress === files.length) {
+            setWorking(false)
+        }
+    }, [files, progress])
     return (
         <>
             <div className='mainframe-wrapper'>
@@ -124,16 +145,16 @@ export default function ImageToWebp(props) {
                         </div>
                         <div className='progress-bar'>
                             <h5 style={{ marginRight: '20px' }}>Progress</h5>
-                            <Provider theme={defaultTheme} UNSAFE_style={{backgroundColor:'transparent', display:'flex', justifyContent:'center', alignItems:'center'}}  width='80%' scale='large' backgroundColor='transparent'>
-                                <ProgressBar size='L' label='' showValueLabel={true} width='100%' backgroundColor='#fdf5e6' labelPosition='side' value={files.length === 0 ? 0 : ((progress / files.length) * 100).toFixed(0)} />
-                            </Provider>
+                            <Line percent={files.length === 0 ? 0 : ((progress / files.length) * 100).toFixed(0)} className='progress-bar-comp'
+                                strokeWidth='2' trailWidth='2'
+                            />
                         </div>
                         <div className='convert-button'>
                             <div className='button-wrapper'>
                                 <ButtonComp text={'RESET FILE'} backgroundColor={'#3cb712'} textColor={'#fdf5e6'} handleClick={() => { initialize() }} />
                             </div>
                             <div className='button-wrapper'>
-                                <ButtonComp text={'CONVERT'} backgroundColor={'#dc143c'} textColor={'#fdf5e6'} handleClick={() => { convertAll() }} />
+                                {setConvertButton()}
                             </div>
 
 
@@ -143,17 +164,17 @@ export default function ImageToWebp(props) {
                 <div className='drag-and-drop-area'
                     onDrop={(e) => {
                         dropEventListener(e, (f) => {
-                            
+
                             if (isDirectory(f)) {
                                 var dirFiles = getDirectoryFiles(f);
                                 var fileArr = [];
                                 for (var file of dirFiles) {
-                                    if(files.includes(file))
+                                    if (files.includes(file))
                                         continue;
-                                    if(fileArr.includes(file))
+                                    if (fileArr.includes(file))
                                         continue;
                                     if (formatConfirm(file)) {
-                                        fileArr.push(f+'\\'+file);
+                                        fileArr.push(f + '\\' + file);
                                     }
                                 }
                                 setFiles(prevfiles => [...prevfiles, ...fileArr]);
@@ -162,7 +183,7 @@ export default function ImageToWebp(props) {
                                 if (formatConfirm(f)) {
                                     if (files.includes(f))
                                         return;
-                                        setFiles(prevfiles => [...prevfiles, f]);
+                                    setFiles(prevfiles => [...prevfiles, f]);
                                 }
                             }
                         })
@@ -170,7 +191,7 @@ export default function ImageToWebp(props) {
                     onDragOver={dragOverListener}
                     onDragEnter={(e) => { dragEnterListener(e, () => { setDrag(true) }) }}
                     onDragLeave={(e) => { dragLeaveListner(e, () => { setDrag(false) }) }}
-                    onClick={() => {  }}
+                    onClick={() => { }}
 
                     onWheel={(e) => { scroll.current.scrollTop(scroll.current.getScrollTop() + e.deltaY) }}
                 >

@@ -47,8 +47,6 @@ function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{
     .videoBitrate(metadata.videoBitrate)
     .audioCodec(metadata.audioCodec)
     .audioBitrate(metadata.audioBitrate)
-    .audioChannels(metadata.audioChannels)
-    .audioFrequency(metadata.audioFrequency)
     .size(metadata.size)
     .on('start', ()=>{
         onStart();
@@ -95,16 +93,10 @@ function getMeta (dir){
  * @returns ::Promise:: ffmpeg's available asset informations:Object
  */
 async function getFfmpegAvailables (){
-    console.log(ffmpeg_path);
-    console.log(ffprobe_path)
     const formats = await getFormatAvailable()
-    console.log(formats);
     const codecs = await getCodecAvailable()
-    console.log(codecs);
     const encoders = await getEncoderAvailable()
-    console.log(encoders);
     const filters = await getFilterAvailable()
-    console.log(filters);
     return {'formats':formats, 'codecs':codecs, 'encoders':encoders, 'filters':filters}
 }
 

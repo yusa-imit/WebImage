@@ -4,7 +4,7 @@ import {faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function TooltipText(props){
     return(
-        <div className='tooltip'>
+        <div className='tooltip' style={props.style}>
             <FontAwesomeIcon  icon={faQuestionCircle}/>
             <div className='tooltipText'>
                 <h5>
