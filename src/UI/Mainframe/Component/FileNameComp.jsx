@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import './FileNameComp.css';
 
-export default function FileNameComp(props){
-    useEffect(()=>{
-        console.log(props.fileName)
-    })
-    
+export default function FileNameComp(props){    
     return(
         <>
             <div className='filename-component'>
