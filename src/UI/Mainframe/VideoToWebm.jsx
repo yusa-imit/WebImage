@@ -171,7 +171,7 @@ export default function ImageToWebm(props) {
     const [outFormat, setOutFormat] = useState('webm');
     const [outFps, setOutFps] = useState(0);
     const [vOutCodec, setVOutCodec] = useState('libvpx-vp9');
-    const [aOutCodec, setAOutCodec] = useState('vorbis');
+    const [aOutCodec, setAOutCodec] = useState('libopus');
     const [vOutBit, setVOutBit] = useState(0);
     const [aOutBit, setAOutBit] = useState(0);
     const [outWidth, setOutWidth] = useState(0);
