@@ -5,6 +5,8 @@ import Loading from './Component/Loading.jsx';
 import ReactPlayer from 'react-player'
 import FileNameComp from './Component/FileNameComp.jsx';
 import TooltipText from './Component/TooltipText.jsx';
+import { DelayInput } from 'react-delay-input';
+import VideoPlayer from 'react-video-js-player';
 
 export default function ImageToWebm(props) {
     let FFMPEG_AVAILABLE;
@@ -50,6 +52,8 @@ export default function ImageToWebm(props) {
                     else {
                         console.log(result.filePaths[0]);
                         setVideo(result.filePaths[0]);
+                        getVideoInfo(result.filePaths[0]);
+                        setFormat(result.filePaths[0].split('.')[result.filePaths[0].split('.').length-1]);
                     }
                 }
             )
@@ -74,9 +78,44 @@ export default function ImageToWebm(props) {
         setLoad(true);
         const path = require("path");
         getMetaData(path.normalize(dir)).then(data => {
-            console.log(data);
+            if (data === undefined) {
+                setLoad(false);
+                return
+            }
+            else {
+                for (var d of data.streams) {
+                    console.log(d)
+                    if (isVideoProperty(d)) {
+                        setVideoInfo(d);
+                    }
+                    else {
+                        setAudioInfo(d);
+                    }
+                }
+            }
             setLoad(false);
+
+
         })
+    }
+    const isVideoProperty = (data) => {
+        if (data.codec_type === "video") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    const setVideoInfo = (data) => {
+        setVCodec(data.codec_name);
+        setVBit(data.bit_rate);
+        setHeight(data.height);
+        setWidth(data.width);
+        setFps(parseInt(data.r_frame_rate));
+    }
+    const setAudioInfo = (data) => {
+        setACodec(data.codec_name);
+        setABit(data.bit_rate);
     }
 
     const setFfmpegInfo = () => {
@@ -108,6 +147,7 @@ export default function ImageToWebm(props) {
     const [vCodec, setVCodec] = useState('');
     const [aCodec, setACodec] = useState('');
     const [vBit, setVBit] = useState(0);
+    const [aBit, setABit] = useState(0);
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
 
@@ -120,13 +160,13 @@ export default function ImageToWebm(props) {
                 <div className="video-area">
                     <div className="video-container" >
                         <ReactPlayer controls={true} className='video-player' url={video}
-                            height='100%' width='fit-content'
+                            height='85%' width='85%'
                         />
                     </div>
                     <div className='buttons-wrapper'>
                         <div className='buttons'>
                             <TooltipText style={{ marginRight: '10px' }} text={'Press right region to input video.'} />
-                            <FileNameComp header={'Input File'} fileName={video} onClick={() => { getFile() }} />
+                            <FileNameComp header={'Input File'} fileName={video} onClick={() => { getFile(); getVideoInfo(video) }} />
                         </div>
                         <div className='buttons'>
                             <TooltipText style={{ marginRight: '10px' }} text={'Press right region to select target directory. \n If target directory is on \"Default\", the program will automatically set directory into file\'s directory.'} />
@@ -137,7 +177,11 @@ export default function ImageToWebm(props) {
                 <div className="video-info">
                     <div className="video-info-child">
                         <div className="infos">
-
+                            <InfoChild title="Input Video"
+                                vFormatValue={format} vFormatIsDisabled={true}
+                                vCodecValue={vCodec} vCodecIsDisabled={true} setVCodecValue={setVCodec}
+                                vBitValue={vBit} vBitIsDisabled={true}
+                            />
                         </div>
                     </div>
                     <div className="video-info-child">
@@ -155,5 +199,67 @@ export default function ImageToWebm(props) {
             </div>
             <LoadingScreen />
         </>
+    )
+}
+
+import Select from 'react-select';
+
+function InfoChild(props) {
+
+    return (
+        <>
+            <div className="info-child">
+                <h4>{props.title}</h4>
+                <Selection title={"Video Format"} value={props.vFormatValue} options={props.vFormatOptions} setValue={props.setVFormatValue} isDisabled={props.vFormatIsDisabled} />
+                <Selection title={"Video Codec"} value={props.vCodecValue} options={props.vCodecOptions} setValue={props.setVCodecValue} isDisabled={props.vCodecIsDisabled} />
+                <Input title={"Video Bitrate"} value={props.vBitValue} setValue={props.setBitValue} isDisabled={props.vBitIsDisabled}/>
+            </div>
+        </>
+    )
+}
+
+function Selection(props) {
+    console.log(props)
+    return (
+        <>
+            <div className='selection-title'>
+                <span>{props.title}</span>
+                <div className='hr-container'><hr /></div>
+            </div>
+            <Select defaultValue={{value:props.value, label:props.value}} value={{value:props.value, label:props.value}} options={props.options===undefined?[{value:props.value, label:props.value}]:props.options} onChange={props.setValue === undefined ? () => { } : props.setValue} isDisabled={props.isDisabled === undefined ? false : props.isDisabled}></Select>
+        </>
+    )
+}
+
+function Input(props) {
+    const setForm = ()=>{
+        if(props.isDisabled===true){
+            return(
+                <LooksLikeInput value={props.value}/>
+            )
+        }
+        else{
+            return(
+                <DelayInput delayTimeout={500} type="number" min={1} value={props.value} onChange={(e) => {if(props.setValue===undefined){return}; props.setValue(e.target.value);}} disabled={props.isDisabled===undefined ? false : props.isDisabled}/>
+            )
+        }
+    }
+    
+    return(
+        <>
+            <div className='selection-title'>
+                <span>{props.title}</span>
+                <div className='hr-container'><hr /></div>
+            </div>
+            {setForm()}
+        </>
+    )
+}
+
+function LooksLikeInput(props){
+    return(
+        <div className='looks-like-input'>
+            {props.value}
+        </div>
     )
 }
