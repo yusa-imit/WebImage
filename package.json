@@ -1,8 +1,8 @@
 {
-  "name": "nozomi.la-crawler",
-  "productName": "nozomi.la-crawler",
+  "name": "webimage",
+  "productName": "WebImage",
   "version": "1.0.0",
-  "description": "Crawling Images from Nozomi.la via selected tags",
+  "description": "Convert media files into web-friendly formats.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
