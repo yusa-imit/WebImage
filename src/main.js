@@ -20,7 +20,7 @@ const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     minWidth: 640,
-    minHeight:480,
+    minHeight: 560,
     width: screen.getPrimaryDisplay().workAreaSize.width/2,
     height: screen.getPrimaryDisplay().workAreaSize.height/3,
     frame:false,
