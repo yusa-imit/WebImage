@@ -71,7 +71,7 @@
 .video-info{
     display: flex;
     flex-direction: row;
-    height: calc(40% - 20px);
+    height: calc(50% - 20px);
     width : calc(100% - 20px);
     padding: 10px;
 }
@@ -83,4 +83,12 @@
     width: calc(50%-10px);
     padding : 5px;
     color: oldlace;
+}
+
+.control-panel{
+    display: flex;
+    flex-direction: column;
+    height: calc(20% - 20px);
+    width: calc(100% - 20px);
+    padding:10px;
 }
