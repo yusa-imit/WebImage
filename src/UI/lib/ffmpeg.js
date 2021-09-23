@@ -42,13 +42,14 @@ function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{
     var command = ffmpeg(fileDir)
     .format(metadata.format)
     .fps(metadata.fps)
-    .autoPad()
     .videoCodec(metadata.videoCodec)
-    .videoBitrate(metadata.videoBitrate)
+    .videoBitrate(metadata.videoBitrate, true)
     .audioCodec(metadata.audioCodec)
     .audioBitrate(metadata.audioBitrate)
-    .size(metadata.size)
-    .on('start', ()=>{
+    .size("1280x720")
+    .autoPad()
+    .on('start', (data)=>{
+        console.log(data);
         onStart();
         
     })
@@ -64,7 +65,8 @@ function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{
         onStderr(err);
     })
     .on('progress', (progress)=>{
-        onProgress(progress)
+        console.log(progress)
+        onProgress(progress.percent)
     })
     .save(saveDir)
 }
