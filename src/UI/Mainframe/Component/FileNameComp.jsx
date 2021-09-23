@@ -11,7 +11,7 @@ export default function FileNameComp(props){
                     </h3>
                 </div>
                 <div className='filename-component-filename' onClick={props.onClick}>
-                    <h4>
+                    <h4 className='file-name-text'>
                         {props.fileName}
                     </h4>
                 </div>
