@@ -6,6 +6,8 @@ import ReactPlayer from 'react-player'
 import FileNameComp from './Component/FileNameComp.jsx';
 import TooltipText from './Component/TooltipText.jsx';
 import { DelayInput } from 'react-delay-input';
+import { Line } from 'rc-progress'
+import ButtonComp from './Component/ButtonComp.jsx';
 import VideoPlayer from 'react-video-js-player';
 
 export default function ImageToWebm(props) {
@@ -53,7 +55,7 @@ export default function ImageToWebm(props) {
                         console.log(result.filePaths[0]);
                         setVideo(result.filePaths[0]);
                         getVideoInfo(result.filePaths[0]);
-                        setFormat(result.filePaths[0].split('.')[result.filePaths[0].split('.').length-1]);
+                        setFormat(result.filePaths[0].split('.')[result.filePaths[0].split('.').length - 1]);
                     }
                 }
             )
@@ -96,6 +98,7 @@ export default function ImageToWebm(props) {
             setLoad(false);
 
 
+
         })
     }
     const isVideoProperty = (data) => {
@@ -112,18 +115,33 @@ export default function ImageToWebm(props) {
         setHeight(data.height);
         setWidth(data.width);
         setFps(parseInt(data.r_frame_rate));
+        setVOutBit(data.bit_rate);
+        setOutHeight(data.height);
+        setOutWidth(data.width);
+        setOutFps(parseInt(data.r_frame_rate));
     }
     const setAudioInfo = (data) => {
         setACodec(data.codec_name);
         setABit(data.bit_rate);
+        setAOutBit(data.bit_rate);
     }
-
+    const [encodableFormats, setEncodableFormats] = useState('');
+    const [audioCodecs, setAudioCodecs] = useState('');
+    const [videoCodecs, setVideoCodecs] = useState('');
     const setFfmpegInfo = () => {
         getFfmpegAvailables().then(data => {
             FFMPEG_AVAILABLE = dataPreprocessing(data);
-            setAvailableFormat(Object.keys(FFMPEG_AVAILABLE.decodableFormats));
-            setLoad(false);
+            console.log(FFMPEG_AVAILABLE);
         })
+            .then(() => {
+                setAvailableFormat(Object.keys(FFMPEG_AVAILABLE.decodableFormats));
+                setEncodableFormats(Object.keys(FFMPEG_AVAILABLE.encodableFormats));
+                setAudioCodecs(Object.keys(FFMPEG_AVAILABLE.audio.codecs));
+                setVideoCodecs(Object.keys(FFMPEG_AVAILABLE.video.codecs));
+            })
+            .then(() => {
+                setLoad(false);
+            })
     }
     const [load, setLoad] = useState(true);
     const [loadText, setLoadText] = useState("Loading Initial FFMPEG Data");
@@ -150,7 +168,65 @@ export default function ImageToWebm(props) {
     const [aBit, setABit] = useState(0);
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
+    const [outFormat, setOutFormat] = useState('webm');
+    const [outFps, setOutFps] = useState(0);
+    const [vOutCodec, setVOutCodec] = useState('libvpx-vp9');
+    const [aOutCodec, setAOutCodec] = useState('vorbis');
+    const [vOutBit, setVOutBit] = useState(0);
+    const [aOutBit, setAOutBit] = useState(0);
+    const [outWidth, setOutWidth] = useState(0);
+    const [outHeight, setOutHeight] = useState(0);
+    /*
+    console.log(outFormat);
+    console.log(outFps);
+    console.log(vOutCodec);
+    console.log(aOutCodec);
+    console.log(vOutBit);
+    console.log(aOutBit);
+    console.log(outWidth);
+    console.log(outHeight);
+    */
+    const getOptions = (key_array) => {
+        if (key_array === undefined)
+            return [];
+        var data = [];
+        for (var key of key_array) {
+            data.push({ value: key, label: key });
+        }
+        return data;
+    }
+    const [progress, setProgress] = useState(0)
 
+    const onConvertClick = () =>{
+        const saveDir = getSaveDir();
+        const sizeConst = width+'x'+height;
+        const videoBitrate = Math.floor(vOutBit/1000)
+        const audioBitrate = Math.floor(aOutBit/1000)
+        console.log(sizeConst);
+        ffmpegProcess(video, saveDir,
+            {format:outFormat, fps:outFps, videoCodec:vOutCodec, videoBitrate:videoBitrate, audioCodec:aOutCodec, audioBitrate:audioBitrate, size:sizeConst},
+            ()=>{},
+            ()=>{},
+            ()=>{},
+            setProgress,
+            ()=>{}
+            );
+    }
+    const getSaveDir = () =>{
+        const use = video.split('.')
+        use.pop();
+        console.log(use);
+        var text="";
+        for(var usage of use){
+            text = text+usage;
+        }
+        if(target==='Default'){
+            return text+'__Converted_by_WebImage.'+outFormat;
+        }
+        else{
+            return target+'\\'+use.join().split('\\')[use.join().split('\\').length-1]+'__Converted_by_WebImage.'+outFormat;
+        }
+    }
     useEffect(() => {
         setFfmpegInfo();
     }, [FFMPEG_AVAILABLE])
@@ -170,7 +246,7 @@ export default function ImageToWebm(props) {
                         </div>
                         <div className='buttons'>
                             <TooltipText style={{ marginRight: '10px' }} text={'Press right region to select target directory. \n If target directory is on \"Default\", the program will automatically set directory into file\'s directory.'} />
-                            <FileNameComp header={'Output Directory'} fileName={target} onClick={() => { getTargetDirectory() }} />
+                            <FileNameComp header={'Output Dir'} fileName={target} onClick={() => { getTargetDirectory() }} />
                         </div>
                     </div>
                 </div>
@@ -181,19 +257,38 @@ export default function ImageToWebm(props) {
                                 vFormatValue={format} vFormatIsDisabled={true}
                                 vCodecValue={vCodec} vCodecIsDisabled={true} setVCodecValue={setVCodec}
                                 vBitValue={vBit} vBitIsDisabled={true}
+                                fpsValue={fps} fpsIsDisabled={true}
+                                widthValue={width} widthIsDisabled={true}
+                                heightValue={height} heightIsDisabled={true}
+                                aCodecValue={aCodec} aCodecIsDisabled={true}
+                                aBitValue={aBit} aBitIsDisabled={true}
                             />
                         </div>
                     </div>
                     <div className="video-info-child">
-
+                        <div className="infos">
+                            <InfoChild title="Output Video"
+                                vFormatValue={outFormat} vFormatIsDisabled={false} vFormatOptions={getOptions(encodableFormats)} setVFormatValue={setOutFormat}
+                                vCodecValue={vOutCodec} vCodecIsDisabled={false} setVCodecValue={setVOutCodec} vCodecOptions={getOptions(videoCodecs)}
+                                vBitValue={vOutBit} vBitIsDisabled={false} setVBitValue={setVOutBit}
+                                fpsValue={outFps} fpsIsDisabled={false} setFpsValue={setOutFps}
+                                widthValue={outWidth} widthIsDisabled={false} setWidthValue={setOutWidth}
+                                heightValue={outHeight} heightIsDisabled={false} setHeightValue={setOutHeight}
+                                aCodecValue={aOutCodec} aCodecIsDisabled={false} setACodecValue={setAOutCodec} aCodecOptions={getOptions(audioCodecs)}
+                                aBitValue={aOutBit} aBitIsDisabled={false} setABitValue={setAOutBit}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="control-panel">
                     <div className="progress-bar">
-
+                        <h5 style={{ marginRight: '20px' }}>Progress</h5>
+                        <Line percent={progress} className='progress-bar-comp'
+                            strokeWidth='2' trailWidth='2'
+                        />
                     </div>
                     <div className="convert-button">
-
+                        <ButtonComp text={"CONVERT"} handleClick={onConvertClick} textColor={'#fdf5e6'} backgroundColor={'#dc143c'}/>
                     </div>
                 </div>
             </div>
@@ -210,54 +305,64 @@ function InfoChild(props) {
         <>
             <div className="info-child">
                 <h4>{props.title}</h4>
-                <Selection title={"Video Format"} value={props.vFormatValue} options={props.vFormatOptions} setValue={props.setVFormatValue} isDisabled={props.vFormatIsDisabled} />
-                <Selection title={"Video Codec"} value={props.vCodecValue} options={props.vCodecOptions} setValue={props.setVCodecValue} isDisabled={props.vCodecIsDisabled} />
-                <Input title={"Video Bitrate"} value={props.vBitValue} setValue={props.setBitValue} isDisabled={props.vBitIsDisabled}/>
+                <div className="info-child-container">
+                    <Selection title={"Video Format"} value={props.vFormatValue} options={props.vFormatOptions} setValue={props.setVFormatValue} isDisabled={props.vFormatIsDisabled} />
+                    <Input title={"FPS"} value={props.fpsValue} setValue={props.setFpsValue} isDisabled={props.fpsIsDisabled} />
+                    <Input title={"Width"} value={props.widthValue} setValue={props.setWidthValue} isDisabled={props.widthIsDisabled} />
+                    <Input title={"Height"} value={props.heightValue} setValue={props.setHeightValue} isDisabled={props.heightIsDisabled} />
+                    <Selection title={"Video Codec"} value={props.vCodecValue} options={props.vCodecOptions} setValue={props.setVCodecValue} isDisabled={props.vCodecIsDisabled} />
+                    <Input title={"Video Bitrate"} value={props.vBitValue} setValue={props.setVBitValue} isDisabled={props.vBitIsDisabled} />
+                    <Selection title={"Audio Codec"} value={props.aCodecValue} options={props.aCodecOptions} setValue={props.setACodecValue} isDisabled={props.aCodecIsDisabled} />
+                    <Input title={"Audio Bitrate"} value={props.aBitValue} setValue={props.setABitValue} isDisabled={props.aBitIsDisabled} />
+                </div>
             </div>
         </>
     )
 }
 
 function Selection(props) {
-    console.log(props)
     return (
         <>
-            <div className='selection-title'>
-                <span>{props.title}</span>
-                <div className='hr-container'><hr /></div>
+            <div>
+                <div className='selection-title'>
+                    <span>{props.title}</span>
+                    <div className='hr-container'><hr /></div>
+                </div>
+                <Select className='select' classNamePrefix='select' style={{ option: styles => ({ ...styles, color: '#000000', overflow: 'hidden' }) }} defaultValue={{ value: props.value, label: props.value }} value={{ value: props.value, label: props.value }} options={props.options === undefined ? [{ value: props.value, label: props.value }] : props.options} onChange={props.setValue === undefined ? () => { } : (data) => { props.setValue(data.value) }} isDisabled={props.isDisabled === undefined ? false : props.isDisabled}></Select>
             </div>
-            <Select defaultValue={{value:props.value, label:props.value}} value={{value:props.value, label:props.value}} options={props.options===undefined?[{value:props.value, label:props.value}]:props.options} onChange={props.setValue === undefined ? () => { } : props.setValue} isDisabled={props.isDisabled === undefined ? false : props.isDisabled}></Select>
         </>
     )
 }
 
 function Input(props) {
-    const setForm = ()=>{
-        if(props.isDisabled===true){
-            return(
-                <LooksLikeInput value={props.value}/>
+    const setForm = () => {
+        if (props.isDisabled === true) {
+            return (
+                <LooksLikeInput value={props.value} />
             )
         }
-        else{
-            return(
-                <DelayInput delayTimeout={500} type="number" min={1} value={props.value} onChange={(e) => {if(props.setValue===undefined){return}; props.setValue(e.target.value);}} disabled={props.isDisabled===undefined ? false : props.isDisabled}/>
+        else {
+            return (
+                <DelayInput forceNotifyByEnter={true} style={{ height: "68%", width: "93%", borderRadius: "5px", fontSize: "1rem", paddingLeft: '0.5rem' }} delayTimeout={500} type="number" min={0} value={props.value} onChange={(e) => { if (props.setValue === undefined) { return }; props.setValue(e.target.value); }} disabled={props.isDisabled === undefined ? false : props.isDisabled} />
             )
         }
     }
-    
-    return(
+
+    return (
         <>
-            <div className='selection-title'>
-                <span>{props.title}</span>
-                <div className='hr-container'><hr /></div>
+            <div>
+                <div className='selection-title'>
+                    <span>{props.title}</span>
+                    <div className='hr-container'><hr /></div>
+                </div>
+                {setForm()}
             </div>
-            {setForm()}
         </>
     )
 }
 
-function LooksLikeInput(props){
-    return(
+function LooksLikeInput(props) {
+    return (
         <div className='looks-like-input'>
             {props.value}
         </div>

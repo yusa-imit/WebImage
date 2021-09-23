@@ -207,11 +207,11 @@ export default function ImageOptimizer(props) {
                     <div className='input-wrapper'>
                         <div className='labeled-wrapper'>
                             <h6>Height</h6>
-                            <DelayInput delayTimeout={500} type="number" min={0} value={height.toFixed(0)} step='' onChange={(e) => { setHeight(parseInt(e.target.value)) }} />
+                            <DelayInput forceNotifyByEnter={true} delayTimeout={500} type="number" min={0} value={height.toFixed(0)} step='' onChange={(e) => { setHeight(parseInt(e.target.value)) }} />
                         </div>
                         <div className='labeled-wrapper'>
                             <h6>Width</h6>
-                            <DelayInput delayTimeout={500} type="number" min={0} value={width.toFixed(0)} step='' onChange={(e) => { setWidth(parseInt(e.target.value)) }} />
+                            <DelayInput forceNotifyByEnter={true} delayTimeout={500} type="number" min={0} value={width.toFixed(0)} step='' onChange={(e) => { setWidth(parseInt(e.target.value)) }} />
                         </div>
                     </div>
                 </div>
