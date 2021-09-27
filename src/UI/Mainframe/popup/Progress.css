@@ -1,0 +1,125 @@
+@keyframes ldio-6pzj0lbar02 {
+  0% {
+    top: 96px;
+    left: 96px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 18px;
+    left: 18px;
+    width: 156px;
+    height: 156px;
+    opacity: 0;
+  }
+}.ldio-6pzj0lbar02 div {
+  position: absolute;
+  border-width: 4px;
+  border-style: solid;
+  opacity: 1;
+  border-radius: 50%;
+  animation: ldio-6pzj0lbar02 1s cubic-bezier(0,0.2,0.8,1) infinite;
+}.ldio-6pzj0lbar02 div:nth-child(1) {
+  border-color: #e90c59;
+  animation-delay: 0s;
+}
+.ldio-6pzj0lbar02 div:nth-child(2) {
+  border-color: #46dff0;
+  animation-delay: -0.5s;
+}
+.loadingio-spinner-ripple-g8m4kw5bmbw {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  overflow: hidden;
+  background: transparent;
+}
+.ldio-6pzj0lbar02 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  transform-origin: 0 0; /* see note above */
+}
+.ldio-6pzj0lbar02 div { box-sizing: content-box; }
+
+.paused{
+  animation-play-state: paused;
+}
+
+/*   =================================================================   */
+
+.progress-background-wrapper {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.progress-background {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(50px);
+    mix-blend-mode: overlay;
+    z-index: 1001;
+}
+
+.progress-wrapper{
+    display:flex;
+    position: relative;
+    height: 60%;
+    width: 40%;
+    color: oldlace;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1002;
+    background-color:rgb(46, 46, 46);
+    border-radius: 15px;
+}
+
+.progress-message-container{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 65%;
+}
+
+.progress-message-container h6{
+    margin-block-start: 0rem;
+    margin-block-end: 0.1rem;
+}
+.progress-message-container h4{
+    margin-block-start: 0.5rem;
+    margin-block-end: 0.5rem;
+}
+
+.progress-progressbar-container h5{
+    margin-block-start: 0rem;
+    margin-block-end: 0rem;
+}
+
+.progress-progressbar-container{
+    width: calc(100% - 20px);
+    height: calc(15% - 20px);
+    padding: 10px;
+}
+
+.progress-button-container{
+    width: 50%;
+    height: calc(20% - 40px);
+    padding: 20px 25% 20px 25%
+}
