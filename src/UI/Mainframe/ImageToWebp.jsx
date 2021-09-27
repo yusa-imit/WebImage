@@ -41,6 +41,8 @@ export default function ImageToWebp(props) {
     const [progress, setProgress] = useState(0);
     const increaseProgress = () => {
         setProgress(prevProg => prevProg + 1);
+        props.setProgressWindow(prevProg=>prevProg + 1);
+        props.setProgressMessage("Processing Images")
     }
     const [files, setFiles] = useState([]);
     //Only Image Variables
@@ -85,6 +87,8 @@ export default function ImageToWebp(props) {
     }
     const convertAll = () => {
         setWorking(true);
+        props.setIsProgress(true);
+        props.setProgressTotal(files.length);
         for (var file of files) {
             convert(file);
         }
@@ -142,12 +146,6 @@ export default function ImageToWebp(props) {
                     <div className='webp-result'>
                         <div className='target-dest'>
                             <FileNameComp header={'Result Destination'} fileName={target} onClick={() => { getTargetDirectory() }} />
-                        </div>
-                        <div className='progress-bar'>
-                            <h5 style={{ marginRight: '20px' }}>Progress</h5>
-                            <Line percent={files.length === 0 ? 0 : ((progress / files.length) * 100).toFixed(0)} className='progress-bar-comp'
-                                strokeWidth='2' trailWidth='2'
-                            />
                         </div>
                         <div className='convert-button'>
                             <div className='button-wrapper'>

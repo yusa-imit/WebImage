@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { get, set, getSync, setSync } from './settings.js';
 import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 import VideoToWebm from "./Mainframe/VideoToWebm.jsx";
+import Progress from './Mainframe/popup/Progress.jsx';
 //import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 
 //
@@ -70,14 +71,28 @@ export default function UI(props) {
       case 0:
         return <ImageOptimizer/>
       case 1:
-        return <ImageToWebp/>
+        return <ImageToWebp setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}/>
       case 2:
-        return <VideoToWebm/>
+        return <VideoToWebm isProgress={isProgress} setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}/>
       default:
         return <ImageOptimizer/>
     }
   }
   setSync('test', true);
+  const [isProgress, setIsProgress] = useState(false);
+  const [progressWindow, setProgressWindow] = useState(0);
+  const [progressTotal,  setProgressTotal] = useState(0);
+  const [progressMessage, setProgressMessage] = useState('CONSOLE');
+  const OnProgress = (props)=>{
+    if(isProgress){
+      return(
+        <Progress progress={progressWindow} total={progressTotal} onClick={()=>{setIsProgress(false)}} message={progressMessage}/>
+      )
+    }
+    else{
+      return(<></>)
+    }
+  }
   return (
     <>
       <div className="App">
@@ -90,7 +105,7 @@ export default function UI(props) {
           <div className='Mainframe'>
             {mainframeSetter()}
           </div>
-
+          <OnProgress />
         </div>
 
       </div>
