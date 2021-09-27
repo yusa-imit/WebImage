@@ -34,12 +34,12 @@ ffmpeg.setFfprobePath(ffprobe_path);
  * @param {called when process started : function} onStart 
  * @param {called when process got error when processing video : function} onError 
  * @param {called when process ended : function} onEnd 
- * @param {called when process got progress : function} onProgress 
+ * @param {called when process got progress : function} functions 
  * @param {called when process got error of standard i/o : function} onStderr 
  * 
  */
-function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{}, onEnd=()=>{}, onProgress=()=>{}, onStderr=()=>{}){
-    var command = ffmpeg(fileDir)
+function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
+    return ffmpeg(fileDir)
     .format(metadata.format)
     .fps(metadata.fps)
     .videoCodec(metadata.videoCodec)
@@ -50,25 +50,25 @@ function ffmpegProcess (fileDir, saveDir, metadata, onStart=()=>{},onError=()=>{
     .autoPad()
     .on('start', (data)=>{
         console.log(data);
-        onStart();
-        
     })
     .on('error', (err)=>{
-        console.log(err.message)
-        onError(err)
+        console.log(err)
+        functions.setProgressMessage(err);
     })
     .on('end', ()=>{
+        functions.setProgressMessage("DONE!");
         console.log('FINISHED')
-        onEnd()
     })
     .on('stderr', (err)=>{
-        onStderr(err);
+        functions.setProgressMessage(err);
     })
     .on('progress', (progress)=>{
         console.log(progress)
-        onProgress(progress.percent)
+        functions.setProgress(progress.percent);
+        functions.setProgressWindow(progress.frames);
+        functions.setProgressMessage("Processing frame number "+ frames);
     })
-    .save(saveDir)
+    
 }
 
 /**
@@ -136,4 +136,4 @@ function getFilterAvailable (){
 }
 
 
-export {getMetaData, getFfmpegAvailables, ffmpegProcess}
+export {ffmpeg, getMetaData, getFfmpegAvailables, ffmpegProcess}
