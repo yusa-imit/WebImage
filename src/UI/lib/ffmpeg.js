@@ -39,7 +39,7 @@ ffmpeg.setFfprobePath(ffprobe_path);
  * 
  */
 function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
-    return ffmpeg(fileDir)
+    ffmpeg(fileDir)
     .format(metadata.format)
     .fps(metadata.fps)
     .videoCodec(metadata.videoCodec)
@@ -70,6 +70,7 @@ function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
     })
     
 }
+
 
 /**
  * Get video's metadata informations
