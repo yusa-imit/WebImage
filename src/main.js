@@ -3,7 +3,7 @@ const path = require('path');
 
 // Library 'sharp' need to included when main process started
 // It's component stacked in memory and become ready-to-use
-require('sharp')
+//const sharp = require('sharp');
 
 //global.ffmpegpath = require('ffmpeg-static').replace('app.asar', 'app.asar.unpacked')
 
