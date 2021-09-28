@@ -6,6 +6,7 @@ import ButtonComp from './Component/ButtonComp.jsx'
 import Scrollbars from 'react-custom-scrollbars'
 import ImageViewer from './Component/ImageViewer.jsx'
 import FileNameComp from './Component/FileNameComp.jsx'
+import DragGuide from './Component/DragGuide.jsx';
 import { Line } from 'rc-progress'
 
 export default function ImageToWebp(props) {
@@ -144,6 +145,9 @@ export default function ImageToWebp(props) {
                                 }
                             </div>
                         </Scrollbars>
+                        <div className='webp-drag-setter'>
+                            <DragGuide drag={drag}/>
+                        </div>
                     </div>
                     <div className='webp-button-wrapper'>
 
@@ -172,7 +176,6 @@ export default function ImageToWebp(props) {
                 <div className='drag-and-drop-area'
                     onDrop={(e) => {
                         dropEventListener(e, (f) => {
-
                             if (isDirectory(f)) {
                                 var dirFiles = getDirectoryFiles(f);
                                 var fileArr = [];
@@ -186,11 +189,14 @@ export default function ImageToWebp(props) {
                                     }
                                 }
                                 setFiles(prevfiles => [...prevfiles, ...fileArr]);
+                                setDrag(false);
                             }
                             else {
                                 if (formatConfirm(f)) {
-                                    if (files.includes(f))
+                                    if (files.includes(f)){
+                                        setDrag(false);
                                         return;
+                                    }
                                     setFiles(prevfiles => [...prevfiles, f]);
                                 }
                             }

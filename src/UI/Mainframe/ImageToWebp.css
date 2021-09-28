@@ -16,6 +16,7 @@
 }
 
 .webp-image-div{
+    position: relative;
     height: calc(50% - 40px);
     width : calc(100% - 40px);
     padding: 10px;
@@ -109,4 +110,10 @@
     height: 100%;
     width: 40%;
     z-index: 20;
+}
+
+.webp-drag-setter{
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
