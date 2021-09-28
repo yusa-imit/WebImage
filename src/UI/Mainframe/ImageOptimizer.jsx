@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import { DelayInput } from 'react-delay-input';
 import TooltipText from './Component/TooltipText.jsx';
+import DragGuide from './Component/DragGuide.jsx';
 
 
 //
@@ -156,7 +157,7 @@ export default function ImageOptimizer(props) {
     const [drag, setDrag] = useState(false);
     //State error : turns into true when dragged file was not image file
     const [error, setError] = useState(false);
-
+    /*
     //drag guide
     const dragGuideSetter = () => {
         if (drag) {
@@ -185,6 +186,7 @@ export default function ImageOptimizer(props) {
             )
         }
     }
+    */
     return (<>
         <div className='img-opt-wrapper'>
             <div className='img-opt-filedir'>
@@ -249,7 +251,9 @@ export default function ImageOptimizer(props) {
                         <h4>{convSize.toFixed(2)}</h4><h4>{' KB'}</h4>
                     </div>
                 </div>
-                {dragGuideSetter()}
+                <div className='drag-setter'>
+                <DragGuide drag={drag}/>
+                </div>
             </div>
         </div>
         
@@ -260,7 +264,8 @@ export default function ImageOptimizer(props) {
                     var acceptables = ['jpg', 'jpeg', 'png', 'gif'];
                     if (!acceptables.includes(extension)) {
                         setDrag(false);
-                        setError(true);
+                        props.setError(true);
+                        props.setErrorText("Image format not supported");
                         initialize();
                         return;
                     }
@@ -275,7 +280,7 @@ export default function ImageOptimizer(props) {
         >
             
         </div>
-        {errorGuideSetter()}
+        
     </>);
 }
 
