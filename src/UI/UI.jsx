@@ -71,9 +71,13 @@ export default function UI(props) {
       case 0:
         return <ImageOptimizer/>
       case 1:
-        return <ImageToWebp setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}/>
+        return <ImageToWebp setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}
+        progressCancel={progressCancel} setProgressCancel={setProgressCancel}
+        />
       case 2:
-        return <VideoToWebm isProgress={isProgress} setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}/>
+        return <VideoToWebm isProgress={isProgress} setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}
+            progressCancel={progressCancel} setProgressCancel={setProgressCancel}
+        />
       default:
         return <ImageOptimizer/>
     }
@@ -83,10 +87,11 @@ export default function UI(props) {
   const [progressWindow, setProgressWindow] = useState(0);
   const [progressTotal,  setProgressTotal] = useState(0);
   const [progressMessage, setProgressMessage] = useState('CONSOLE');
+  const [progressCancel, setProgressCancel] = useState(false);
   const OnProgress = (props)=>{
     if(isProgress){
       return(
-        <Progress progress={progressWindow} total={progressTotal} onClick={()=>{setIsProgress(false)}} message={progressMessage}/>
+        <Progress progress={progressWindow} total={progressTotal} onCloseClick={()=>{setIsProgress(false)}} onCalcelClick={()=>{setProgressCancel(false)}} message={progressMessage} progressCancel={progressCancel} />
       )
     }
     else{
