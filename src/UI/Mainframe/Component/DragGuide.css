@@ -1,0 +1,35 @@
+.drag-guide{
+    position: relative;
+    background-color: rgba(255, 210, 85, 0.555);
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: oldlace;
+    animation-duration: 0.7s;
+    animation-name: drag;
+    animation-timing-function: cubic-bezier(.18,.83,0,1.01);
+}
+
+.dots{
+    width: 95%;
+    height: 90%;
+    border-radius: 20px;
+    border-style:dashed;
+    border-color: oldlace;
+    border-width: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes drag{
+    0%{
+        transform: scale(0%);
+    }
+    100%{
+        transform: scale(100%);
+    }
+}
