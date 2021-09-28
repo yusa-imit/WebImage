@@ -9,6 +9,7 @@ import { get, set, getSync, setSync } from './settings.js';
 import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 import VideoToWebm from "./Mainframe/VideoToWebm.jsx";
 import Progress from './Mainframe/popup/Progress.jsx';
+import ErrorGuide from "./Mainframe/Component/ErrorGuide.jsx";
 //import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 
 //
@@ -69,14 +70,16 @@ export default function UI(props) {
   const mainframeSetter = () =>{
     switch (buttonState.indexOf(true)){
       case 0:
-        return <ImageOptimizer/>
+        return <ImageOptimizer setError={setError} setErrorText={setErrorText}/>
       case 1:
         return <ImageToWebp setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}
         progressCancel={progressCancel} setProgressCancel={setProgressCancel}
+        setError={setError} setErrorText={setErrorText}
         />
       case 2:
         return <VideoToWebm isProgress={isProgress} setIsProgress={setIsProgress} setProgressWindow={setProgressWindow} setProgressTotal={setProgressTotal} setProgressMessage={setProgressMessage}
             progressCancel={progressCancel} setProgressCancel={setProgressCancel}
+            setError={setError} setErrorText={setErrorText}
         />
       default:
         return <ImageOptimizer/>
@@ -98,6 +101,9 @@ export default function UI(props) {
       return(<></>)
     }
   }
+
+  const [error, setError] = useState(false);
+  const [errorText, setErrorText] = useState(undefined);
   return (
     <>
       <div className="App">
@@ -106,11 +112,12 @@ export default function UI(props) {
           <div className='particle-container'>
             <ParticlesBg type="custom" config={config} bg={{ position: "absolute", width: "100%", height: "100%", top: "0px", left: "0", background: "transparent" }} num={10} />
           </div>
-          <LeftMenu buttonState={buttonState} changeButtonState={(num)=>{changeButtonState(num)}}/>
+          <LeftMenu  buttonState={buttonState.indexOf(true)} changeButtonState={(num)=>{changeButtonState(num)}}/>
           <div className='Mainframe'>
             {mainframeSetter()}
           </div>
           <OnProgress />
+          <ErrorGuide error={error} text={errorText} onClick={()=>{setError(false)}} />
         </div>
 
       </div>
