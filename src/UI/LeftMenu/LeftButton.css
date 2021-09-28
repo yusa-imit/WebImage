@@ -1,23 +1,39 @@
 .LeftButton-wrapper{
-    width: 75%;
-    height: 10%;
-    margin-top: 5%;
-    margin-bottom: 10%;
-    padding-left: 5%;
-    padding-right: 5%;
+    width: calc(5vh + 10vw);
+    height: calc(6vh + 2vw);
+    margin-top: 1vh;
+    margin-bottom: 2vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
     display: flex;
     flex-direction: row;
     justify-content:space-evenly;
     align-items: center;
-    background: #ffffff;
     transition: box-shadow 1s;
+    --width: 100%;
+	--time: 0.7s;
+    position: relative;
+	display: inline-block;
+	color: white;
+	background: transparent;
+	overflow: hidden;
+    z-index: 10;
+    border-radius: 15px;
+    border-bottom: 1px solid #fff;
+    border-left:1px solid #fff;
+    transition: transform 0.7s;
 }
 
 .LeftButton-icon{
     font-size: 1.5em;
 }
 
-.LeftButton-text{
+.LeftButton-wrapper:hover{
+    transform: rotateY(-2deg);
+    transition: transform 0.7s;
+}
+
+.LeftButton-wrapper .LeftButton-text{
     position: relative;
     text-align: center;
     width: 100%;
@@ -30,5 +46,68 @@
     font-size: calc(1vh + 1vw);
     overflow: hidden;
     font-weight: 700;
+	transition: color var(--time);
 }
 
+.LeftButton-wrapper .LeftButton-text-clicked{
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items: center;
+    font-size: calc(1vh + 1vw);
+    overflow: hidden;
+    font-weight: 700;
+	transition: color var(--time);
+    color: #222;
+}
+
+.LeftButton-wrapper:hover .LeftButton-text{
+    color:#222
+}
+
+.LeftButton-wrapper div{
+    position: absolute;
+	display: block;
+	content: "";
+	z-index: 0;
+	width: 0;
+	height: 0;
+	
+	border-radius: 100%;
+	background: #fff;
+	
+	transform: translate(-50%, -50%);
+	transition: width var(--time), padding-top var(--time);
+}
+
+.LeftButton-wrapper:hover div{
+    width: calc(var(--width) * 2.25);
+	padding-top: calc(var(--width) * 2.25);
+}
+
+.LeftButton-background{
+    background-color: #222;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: background-color 0.7s;
+}
+
+.LeftButton-background-clicked{
+    background-color:#fff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: background-color 0.7s;
+}
