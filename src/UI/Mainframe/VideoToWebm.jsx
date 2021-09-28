@@ -9,6 +9,8 @@ import { DelayInput } from 'react-delay-input';
 import { Line } from 'rc-progress'
 import ButtonComp from './Component/ButtonComp.jsx';
 import VideoPlayer from 'react-video-js-player';
+import { dragEnterListener, dragLeaveListner, dragOverListener, dropEventListener } from './dragAndDropListners.js'
+import DragGuide from './Component/DragGuide.jsx'
 
 export default function ImageToWebm(props) {
     let FFMPEG_AVAILABLE;
@@ -247,6 +249,9 @@ export default function ImageToWebm(props) {
             return target+'\\'+use.join().split('\\')[use.join().split('\\').length-1]+'__Converted_by_WebImage.'+outFormat;
         }
     }
+
+    const [drag, setDrag] = useState(false);
+
     useEffect(()=>{
        if(props.progressCancel===false && progress!==0)
             killProcess();
@@ -273,11 +278,15 @@ export default function ImageToWebm(props) {
                             <FileNameComp header={'Output Dir'} fileName={target} onClick={() => { getTargetDirectory() }} />
                         </div>
                     </div>
+                    <div className='video-drag-setter'>
+                        <DragGuide drag={drag}/>
+                    </div>
                 </div>
                 <div className="video-info">
                     <div className="video-info-child">
                         <div className="infos">
                             <InfoChild title="Input Video"
+                                helpText={"Information about input video."}
                                 vFormatValue={format} vFormatIsDisabled={true}
                                 vCodecValue={vCodec} vCodecIsDisabled={true} setVCodecValue={setVCodec}
                                 vBitValue={vBit} vBitIsDisabled={true}
@@ -292,6 +301,7 @@ export default function ImageToWebm(props) {
                     <div className="video-info-child">
                         <div className="infos">
                             <InfoChild title="Output Video"
+                                helpText={"Information about output video. \n If you want small-sized video, reduce bitrates. \n If you are not experted, don't change Format or Codecs."}
                                 vFormatValue={outFormat} vFormatIsDisabled={false} vFormatOptions={getOptions(encodableFormats)} setVFormatValue={setOutFormat}
                                 vCodecValue={vOutCodec} vCodecIsDisabled={false} setVCodecValue={setVOutCodec} vCodecOptions={getOptions(videoCodecs)}
                                 vBitValue={vOutBit} vBitIsDisabled={false} setVBitValue={setVOutBit}
@@ -311,6 +321,33 @@ export default function ImageToWebm(props) {
                 </div>
             </div>
             <LoadingScreen />
+            <div className='drag-and-drop-area'
+            onDrop={(e) => {
+                dropEventListener(e, (p) => {
+                    var extension = p.split('.')[p.split('.').length - 1];
+                    if(isDirectory(p)){
+                        props.setError(true);
+                        props.setErrorText("Cannot directly instert directory")
+                    }
+                    else if (!availableFormat.includes(extension)) {
+                        setDrag(false);
+                        props.setError(true);
+                        props.setErrorText("Video format not supported");
+                        //initialize();
+                        return;
+                    }
+                    setDrag(false);
+                    setVideo(p);
+                    getVideoInfo(p);
+                    setFormat(p.split('.')[result.filePaths[0].split('.').length - 1]);
+                })
+            }}
+            onDragOver={dragOverListener}
+            onDragEnter={(e) => { dragEnterListener(e, () => { setDrag(true) }) }}
+            onDragLeave={(e) => { dragLeaveListner(e, () => { setDrag(false) }) }}
+            onClick={() => { setSizeSelectionClick(false) }}
+        >
+        </div>
         </>
     )
 }
@@ -323,7 +360,10 @@ function InfoChild(props) {
     return (
         <>
             <div className="info-child">
-                <h4>{props.title}</h4>
+                <div className="info-child-title">
+                    <h4>{props.title}</h4> 
+                    <TooltipText style={{ marginLeft: '10px' }} text={props.helpText} />
+                </div>
                 <div className="info-child-container">
                     <Selection title={"Video Format"} value={props.vFormatValue} options={props.vFormatOptions} setValue={props.setVFormatValue} isDisabled={props.vFormatIsDisabled} />
                     <Input title={"FPS"} value={props.fpsValue} setValue={props.setFpsValue} isDisabled={props.fpsIsDisabled} />
@@ -362,7 +402,9 @@ function Input(props) {
         }
         else {
             return (
-                <DelayInput forceNotifyByEnter={true} style={{ height: "68%", width: "93%", borderRadius: "5px", fontSize: "1rem", paddingLeft: '0.5rem' }} delayTimeout={500} type="number" min={0} value={props.value} onChange={(e) => { if (props.setValue === undefined) { return }; props.setValue(e.target.value); }} disabled={props.isDisabled === undefined ? false : props.isDisabled} />
+                <div className='delay-input-wrapper'>
+                <DelayInput forceNotifyByEnter={true} style={{zIndex:30, height: "68%", width: "93%", borderRadius: "5px", fontSize: "1rem", paddingLeft: '0.5rem' }} delayTimeout={500} type="number" min={0} value={props.value} onChange={(e) => { if (props.setValue === undefined) { return }; props.setValue(e.target.value); }} disabled={props.isDisabled === undefined ? false : props.isDisabled} />
+                </div>
             )
         }
     }
@@ -388,3 +430,7 @@ function LooksLikeInput(props) {
     )
 }
 
+function isDirectory(f) {
+    var fs = require('fs');
+    return fs.statSync(f).isDirectory();
+}
