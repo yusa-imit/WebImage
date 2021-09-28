@@ -4,8 +4,9 @@ import ButtonComp from '../Component/ButtonComp.jsx';
 import { Line } from 'rc-progress'
 
 export default function Progress(props) {
-    const buttonText = props.progress === props.total ?'OK':'CANCEL' 
-    const buttonColor = props.progress === props.total ?"#3cb712":'#dc143c'
+    const cancelButtonColor = '#dc143c'
+    const closeButtonColor ='#3cb712'
+    const closeButtonFunction = props.onCloseClick
     const message = props.progress === props.total ? "DONE!" : props.message;
     return (
         <>
@@ -15,7 +16,9 @@ export default function Progress(props) {
                 </div>
                 <div className="progress-wrapper">
                     <div className="progress-message-container">
-                        <h4>Working on progress</h4>
+                        <div className='progress-message-title'>
+                            <h4>Working on progress</h4>
+                        </div>
                         <RippleAnimationComp/>
                         <h6>{message}</h6>
                     </div>
@@ -24,7 +27,8 @@ export default function Progress(props) {
                         <Line percent={props.total === 0 ? 0 : ((props.progress / props.total) * 100).toFixed(0)} strokeWidth='2' trailWidth='2' />
                     </div>
                     <div className="progress-button-container">
-                        <ButtonComp text={buttonText} textColor={'#fdf5e6'} backgroundColor={buttonColor} handleClick={props.onClick}/>
+                        <ButtonComp text={"Cancel"} textColor={'#fdf5e6'} backgroundColor={cancelButtonColor} handleClick={props.onCalcelClick} disable={props.progressCancel===true?false:true}/>
+                        <ButtonComp text={"Close"} textColor={'#fdf5e6'} backgroundColor={closeButtonColor} handleClick={closeButtonFunction} disable={props.progressCancel===true?true:false}/>
                     </div>
                 </div>
             </div>

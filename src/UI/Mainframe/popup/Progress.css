@@ -87,6 +87,7 @@
     z-index: 1002;
     background-color:rgb(46, 46, 46);
     border-radius: 15px;
+    overflow: hidden;
 }
 
 .progress-message-container{
@@ -96,6 +97,7 @@
     align-items: center;
     width: 100%;
     height: 65%;
+    
 }
 
 .progress-message-container h6{
@@ -119,7 +121,20 @@
 }
 
 .progress-button-container{
-    width: 50%;
+    width: 60%;
     height: calc(20% - 40px);
-    padding: 20px 25% 20px 25%
+    padding: 20px 25% 20px 25%;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.progress-message-title{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #181818
 }
