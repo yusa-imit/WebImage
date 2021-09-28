@@ -10,6 +10,11 @@
     margin-left: 0.6rem;
 }
 
+.tooltip svg{
+    
+    z-index: 50;
+}
+
 .tooltip .tooltipText{
     visibility: hidden;
     height: auto;
@@ -20,9 +25,9 @@
     left:auto;
     top: 25px;
     position: absolute;
-    z-index: 30;
     white-space: pre-line;
     border-radius: 5px;
+    z-index: 51;
 }
 
 .tooltip .tooltipText h5{
@@ -33,6 +38,7 @@
 
 .tooltip:hover .tooltipText{
     visibility: visible;
+    z-index: 51;
 }
 
 .tooltipText::after{
