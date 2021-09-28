@@ -38,8 +38,10 @@ ffmpeg.setFfprobePath(ffprobe_path);
  * @param {called when process got error of standard i/o : function} onStderr 
  * 
  */
+const command = new ffmpeg();
 function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
-    ffmpeg(fileDir)
+    command
+    .input(fileDir)
     .format(metadata.format)
     .fps(metadata.fps)
     .videoCodec(metadata.videoCodec)
@@ -52,8 +54,8 @@ function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
         console.log(data);
     })
     .on('error', (err)=>{
-        console.log(err)
-        functions.setProgressMessage(err);
+        console.log(err.message)
+        functions.setProgressMessage("Process Cancelled");
     })
     .on('end', ()=>{
         functions.setProgressMessage("DONE!");
@@ -66,9 +68,12 @@ function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
         console.log(progress)
         functions.setProgress(progress.percent);
         functions.setProgressWindow(progress.frames);
-        functions.setProgressMessage("Processing frame number "+ frames);
+        functions.setProgressMessage("Processing frame number "+ progress.frames);
     })
-    
+    .save(saveDir);
+}
+function killProcess(){
+    command.kill();
 }
 
 
@@ -137,4 +142,4 @@ function getFilterAvailable (){
 }
 
 
-export {ffmpeg, getMetaData, getFfmpegAvailables, ffmpegProcess}
+export {killProcess, getMetaData, getFfmpegAvailables, ffmpegProcess}
