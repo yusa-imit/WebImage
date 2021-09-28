@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './VideoToWebm.css'
-import { ffmpeg, getMetaData, getFfmpegAvailables } from '../lib/ffmpeg.js';
+import {killProcess, ffmpegProcess, getMetaData, getFfmpegAvailables } from '../lib/ffmpeg.js';
 import Loading from './Component/Loading.jsx';
 import ReactPlayer from 'react-player'
 import FileNameComp from './Component/FileNameComp.jsx';
@@ -203,52 +203,16 @@ export default function ImageToWebm(props) {
         props.setProgressWindow(num)
         props.setProgressMessage("Processing frame number "+ num);
     }
-    const process = ffmpeg(video);
-
-    function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
-        process
-        .format(metadata.format)
-        .fps(metadata.fps)
-        .videoCodec(metadata.videoCodec)
-        .videoBitrate(metadata.videoBitrate, true)
-        .audioCodec(metadata.audioCodec)
-        .audioBitrate(metadata.audioBitrate)
-        .size("1280x720")
-        .autoPad()
-        .on('start', (data)=>{
-            console.log(data);
-        })
-        .on('error', (err)=>{
-            console.log(err)
-            process.kill();
-            functions.setProgressMessage(err.message);
-        })
-        .on('end', ()=>{
-            functions.setProgressMessage("DONE!");
-            console.log('FINISHED')
-        })
-        .on('stderr', (err)=>{
-            functions.setProgressMessage(err);
-        })
-        .on('progress', (progress)=>{
-            console.log(progress)
-            functions.setProgress(progress.percent);
-            functions.setProgressWindow(progress.frames);
-            functions.setProgressMessage("Processing frame number "+ progress.frames);
-            if(props.isProgress!==true && progress!==0){
-                //command.kill()
-                //console.log("isProgress is false")
-            }
-        })
-        .save(saveDir);
-        
-    }
     const onConvertClick = () =>{
+        if(!isFileExists(video)){
+            return;
+        }
         const saveDir = getSaveDir();
         const sizeConst = width+'x'+height;
         const videoBitrate = Math.floor(vOutBit/1000)
         const audioBitrate = Math.floor(aOutBit/1000)
         console.log(sizeConst);
+        props.setProgressCancel(true);
         props.setIsProgress(true);
         props.setProgressTotal(totalFrames);
         ffmpegProcess(video, saveDir,
@@ -256,9 +220,18 @@ export default function ImageToWebm(props) {
             {setProgress:setProgress, setProgressWindow:props.setProgressWindow, setProgressMessage:props.setProgressMessage}
         )
     }
-    if(!props.isProgress){
-        process.kill();
+    const fs = require('fs')
+    const isFileExists = ()=>{
+        try{
+            if(fs.existsSync(video)){
+                return true;
+            }
+        }catch(e) {
+            return false
+        }
+        return false;
     }
+
     const getSaveDir = () =>{
         const use = video.split('.')
         use.pop();
@@ -275,15 +248,8 @@ export default function ImageToWebm(props) {
         }
     }
     useEffect(()=>{
-       if(props.isProgress===false && progress!==0)
-            console.log(process);
-            ()=> {
-                process.on('error', function() {
-                  console.log('Ffmpeg has been killed');
-                });
-              
-                process.kill();
-            }
+       if(props.progressCancel===false && progress!==0)
+            killProcess();
     }, )
     useEffect(() => {
         setFfmpegInfo();

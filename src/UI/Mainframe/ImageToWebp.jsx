@@ -86,13 +86,23 @@ export default function ImageToWebp(props) {
         sharpConvertAndExport(f, convertInto, target, setInfo, increaseProgress)
     }
     const convertAll = () => {
+        if(files.length===0){
+            return;
+        }
         setWorking(true);
+        props.setProgressCancel(true);
         props.setIsProgress(true);
         props.setProgressTotal(files.length);
         for (var file of files) {
             convert(file);
+            if(props.progressCancel===false&& progress!==0){
+                props.setProgressMessage("Cancelled")
+                break;
+            }
+            if(files.length===progress){
+                props.setProgressCancel(false);
+            }
         }
-
     }
     const initialize = () => {
         setInfo([]);
