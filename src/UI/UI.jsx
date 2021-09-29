@@ -91,17 +91,6 @@ export default function UI(props) {
   const [progressTotal,  setProgressTotal] = useState(0);
   const [progressMessage, setProgressMessage] = useState('CONSOLE');
   const [progressCancel, setProgressCancel] = useState(false);
-  const OnProgress = (props)=>{
-    if(isProgress){
-      return(
-        <Progress progress={progressWindow} total={progressTotal} onCloseClick={()=>{setIsProgress(false)}} onCalcelClick={()=>{setProgressCancel(false)}} message={progressMessage} progressCancel={progressCancel} />
-      )
-    }
-    else{
-      return(<></>)
-    }
-  }
-
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState(undefined);
   return (
@@ -116,7 +105,7 @@ export default function UI(props) {
           <div className='Mainframe'>
             {mainframeSetter()}
           </div>
-          <OnProgress />
+          <Progress isProgress={isProgress} progress={progressWindow} total={progressTotal} onCloseClick={()=>{setIsProgress(false)}} onCalcelClick={()=>{setProgressCancel(false)}} message={progressMessage} progressCancel={progressCancel} />
           <ErrorGuide error={error} text={errorText} onClick={()=>{setError(false)}} />
         </div>
 
