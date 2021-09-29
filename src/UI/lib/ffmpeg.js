@@ -38,8 +38,9 @@ ffmpeg.setFfprobePath(ffprobe_path);
  * @param {called when process got error of standard i/o : function} onStderr 
  * 
  */
-const command = new ffmpeg();
+let command
 function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
+    command = new ffmpeg();
     command
     .input(fileDir)
     .format(metadata.format)
@@ -54,11 +55,12 @@ function ffmpegProcess (fileDir, saveDir, metadata, functions={}){
         console.log(data);
     })
     .on('error', (err)=>{
-        console.log(err.message)
+        console.log(err)
         functions.setProgressMessage("Process Cancelled");
     })
     .on('end', ()=>{
         functions.setProgressMessage("DONE!");
+        functions.setProgressCancel(false);
         console.log('FINISHED')
     })
     .on('stderr', (err)=>{
