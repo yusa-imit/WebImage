@@ -9,6 +9,7 @@ import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 import VideoToWebm from "./Mainframe/VideoToWebm.jsx";
 import Progress from './Mainframe/popup/Progress.jsx';
 import ErrorGuide from "./Mainframe/Component/ErrorGuide.jsx";
+import Settings from "./Mainframe/Settings.jsx";
 //import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 
 //
@@ -80,6 +81,8 @@ export default function UI(props) {
             progressCancel={progressCancel} setProgressCancel={setProgressCancel}
             setError={setError} setErrorText={setErrorText}
         />
+      case 3:
+        return <Settings />
       default:
         return <ImageOptimizer/>
     }
