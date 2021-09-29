@@ -27,6 +27,37 @@
     text-align: center;
     animation-duration: 0.6s;
     animation-name: alert;
+    transition: transform 0.5s;
+}
+
+.error-backdrop-min{
+    position:absolute;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    transform: scale(0);
+    transition: transform 0.5s
+}
+
+.error-guide-min{
+    position: relative;
+    width: 30%;
+    height: 30%;
+    padding: 10%;
+    background-color: rgb(182, 18, 18);
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:oldlace;
+    z-index: 404;
+    border-radius: 25px;
+    text-align: center;
+    transform: scale(0);
+    transition: transform 0.5s;
 }
 
 @keyframes alert {

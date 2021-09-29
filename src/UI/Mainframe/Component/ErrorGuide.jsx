@@ -4,21 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 export default function ErrorGuide(props) {
     const text = props.text === undefined ? "Error Occured" : props.text;
-    const error = props.error === undefined ?false : props.error;
-    if (error) {
-        return (
-            <>
-                <div className="error-backdrop">
-                    <div className='error-guide' onClick={props.onClick}>
-                        <h1><FontAwesomeIcon className='alert-icon' icon={faExclamationTriangle}></FontAwesomeIcon></h1>
-                        <h2>{text}</h2>
-                        <h5>Click this message to get back</h5>
-                    </div>
+    const error = props.error === undefined ? false : props.error;
+    const guideClassName = error ? "error-guide" : "error-guide-min";
+    const backdropClassName = error ? "error-backdrop" : "error-backdrop-min";
+    return (
+        <>
+            <div className={backdropClassName}>
+                <div className={guideClassName} onClick={props.onClick}>
+                    <h1><FontAwesomeIcon className='alert-icon' icon={faExclamationTriangle}></FontAwesomeIcon></h1>
+                    <h2>{text}</h2>
+                    <h5>Click this message to get back</h5>
                 </div>
-            </>
-        )
-    }
-    else {
-        return <></>
-    }
+            </div>
+        </>
+    )
+
+
 }
