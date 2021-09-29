@@ -5,7 +5,7 @@ import './UI.css'
 import ImageOptimizer from "./Mainframe/ImageOptimizer.jsx";
 import ParticlesBg from "particles-bg";
 import { useSelector } from "react-redux";
-import { get, set, getSync, setSync } from './settings.js';
+import {initialize, get, set, getSync, setSync } from './settings.js';
 import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 import VideoToWebm from "./Mainframe/VideoToWebm.jsx";
 import Progress from './Mainframe/popup/Progress.jsx';
@@ -85,7 +85,11 @@ export default function UI(props) {
         return <ImageOptimizer/>
     }
   }
-  setSync('test', true);
+  //setSync('test', true);
+  useEffect(() => {
+    initialize();
+  })
+  console.log(getSync('test'))
   const [isProgress, setIsProgress] = useState(false);
   const [progressWindow, setProgressWindow] = useState(0);
   const [progressTotal,  setProgressTotal] = useState(0);
