@@ -1,0 +1,22 @@
+{
+    "webm":{
+        "video": "libvpx-vp9",
+        "audio": "libopus"
+    },
+    "mp4":{
+        "video": "libx265",
+        "audio": "aac"
+    },
+    "avi":{
+        "video": "mpeg4",
+        "audio": "aac"
+    },
+    "ogg":{
+        "video": "libtheora",
+        "audio": "flac"
+    },
+    "mov": {
+        "video": "prores",
+        "audio": "alac"
+    }
+}
