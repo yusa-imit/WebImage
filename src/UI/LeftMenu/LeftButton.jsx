@@ -48,7 +48,7 @@ export default function LeftButton(props){
                 />
                 <span className={setTextClass()}>
                     <FontAwesomeIcon className='LeftButton-icon' icon={props.source.icon}/>
-                    <text>{props.source.name}</text>
+                    <span>{props.source.name}</span>
                 </span>
                 <span className={setBackgroundColor()}></span>
             </div>
