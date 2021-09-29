@@ -61,6 +61,18 @@
     z-index: 1001;
 }
 
+.progress-background-wrapper-min{
+  display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    transform: scale(0);
+    transition: transform 0.5s;
+}
+
 .progress-background {
     display: flex;
     position: absolute;
@@ -73,6 +85,21 @@
     backdrop-filter: blur(50px);
     mix-blend-mode: overlay;
     z-index: 1001;
+}
+
+.progress-background-min{
+  display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(50px);
+    mix-blend-mode: overlay;
+    z-index: 1001;
+    transform: opacity(0);
 }
 
 .progress-wrapper{
@@ -88,6 +115,25 @@
     background-color:rgb(46, 46, 46);
     border-radius: 15px;
     overflow: hidden;
+    transform: scale(1);
+    transition: transform 0.5s;
+}
+
+.progress-wrapper-min{
+  display:flex;
+    position: relative;
+    height: 60%;
+    width: 40%;
+    color: oldlace;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1002;
+    background-color:rgb(46, 46, 46);
+    border-radius: 15px;
+    overflow: hidden;
+    transform: scale(0);
+    transition: transform 0.5s;
 }
 
 .progress-message-container{

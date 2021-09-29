@@ -8,13 +8,16 @@ export default function Progress(props) {
     const closeButtonColor ='#3cb712'
     const closeButtonFunction = props.onCloseClick
     const message = props.progress === props.total ? "DONE!" : props.message;
+    const backgroundWrapperName = props.isProgress?'progress-background-wrapper':'progress-background-wrapper-min';
+    const backgroundClassName = props.isProgress?'progress-background':'progress-background-min';
+    const progressClassName = props.isProgress?'progress-wrapper':'progress-wrapper-min';
     return (
         <>
-            <div className="progress-background-wrapper">
-                <div className="progress-background">
+            <div className={backgroundWrapperName}>
+                <div className={backgroundClassName}>
 
                 </div>
-                <div className="progress-wrapper">
+                <div className={progressClassName}>
                     <div className="progress-message-container">
                         <div className='progress-message-title'>
                             <h4>Working on progress</h4>
