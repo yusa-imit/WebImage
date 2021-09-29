@@ -1,3 +1,5 @@
+import {getSync} from '../settings.js';
+
 export async function sharpConvert(file, format){
     const sharp = require('sharp');
     const data = await sharp(file)
@@ -10,8 +12,9 @@ export async function sharpConvert(file, format){
 //이 함수는 다시 컴포넌트 안에 구현할 것
 //주고받아야 할 매개변수의 크기가 너무 큼
 export function sharpConvertAndExport(file, format, targetDest, setInfo, increaseProgress){
+    const postFix = getSync('postFix');
     const sharp = require('sharp');
-    const formatChange = file.split('.')[0]+'__converted_by_WebImage.'+format;
+    const formatChange = file.split('.')[0]+postFix+'.'+format;
     const arr = formatChange.split('\\')
     const fileName = arr.pop();
     const originDest = arr.join('\\');
