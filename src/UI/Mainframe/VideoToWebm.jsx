@@ -8,7 +8,6 @@ import TooltipText from './Component/TooltipText.jsx';
 import { DelayInput } from 'react-delay-input';
 import { Line } from 'rc-progress'
 import ButtonComp from './Component/ButtonComp.jsx';
-import VideoPlayer from 'react-video-js-player';
 import { dragEnterListener, dragLeaveListner, dragOverListener, dropEventListener } from './dragAndDropListners.js'
 import DragGuide from './Component/DragGuide.jsx'
 

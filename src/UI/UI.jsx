@@ -4,7 +4,6 @@ import LeftMenu from "./LeftMenu/LeftMenu.jsx";
 import './UI.css'
 import ImageOptimizer from "./Mainframe/ImageOptimizer.jsx";
 import ParticlesBg from "particles-bg";
-import { useSelector } from "react-redux";
 import {initialize, get, set, getSync, setSync } from './settings.js';
 import ImageToWebp from "./Mainframe/ImageToWebp.jsx";
 import VideoToWebm from "./Mainframe/VideoToWebm.jsx";
