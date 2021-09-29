@@ -28,6 +28,8 @@ const INITIAL_STATE = {
     postFix: new SettingObject('__Converted_by_WebImage', [String]),
     backgroundAnimation: new SettingObject(true, [Boolean]),
     defaultStorage: new SettingObject("Default", [String]),
+    usingVideoPreset: new SettingObject(false, [Boolean]),
+    videoPreset: new SettingObject('webm',[String])
 }
 
 export const initialize = () => {
