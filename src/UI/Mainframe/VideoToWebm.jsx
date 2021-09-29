@@ -6,11 +6,10 @@ import ReactPlayer from 'react-player'
 import FileNameComp from './Component/FileNameComp.jsx';
 import TooltipText from './Component/TooltipText.jsx';
 import { DelayInput } from 'react-delay-input';
-import { Line } from 'rc-progress'
 import ButtonComp from './Component/ButtonComp.jsx';
 import { dragEnterListener, dragLeaveListner, dragOverListener, dropEventListener } from './dragAndDropListners.js'
 import DragGuide from './Component/DragGuide.jsx'
-
+import {getSync} from '../settings.js';
 export default function ImageToWebm(props) {
     let FFMPEG_AVAILABLE;
     const dataPreprocessing = (data) => {
@@ -53,7 +52,6 @@ export default function ImageToWebm(props) {
 
                     }
                     else {
-                        console.log(result.filePaths[0]);
                         setVideo(result.filePaths[0]);
                         getVideoInfo(result.filePaths[0]);
                         setFormat(result.filePaths[0].split('.')[result.filePaths[0].split('.').length - 1]);
@@ -87,7 +85,6 @@ export default function ImageToWebm(props) {
             }
             else {
                 for (var d of data.streams) {
-                    console.log(d)
                     if (isVideoProperty(d)) {
                         setVideoInfo(d);
                     }
@@ -133,13 +130,12 @@ export default function ImageToWebm(props) {
     const setFfmpegInfo = () => {
         getFfmpegAvailables().then(data => {
             FFMPEG_AVAILABLE = dataPreprocessing(data);
-            console.log(FFMPEG_AVAILABLE);
         })
             .then(() => {
                 setAvailableFormat(Object.keys(FFMPEG_AVAILABLE.decodableFormats));
                 setEncodableFormats(Object.keys(FFMPEG_AVAILABLE.encodableFormats));
-                setAudioCodecs(Object.keys(FFMPEG_AVAILABLE.audio.codecs));
-                setVideoCodecs(Object.keys(FFMPEG_AVAILABLE.video.codecs));
+                setAudioCodecs(Object.keys(FFMPEG_AVAILABLE.audio.encoders));
+                setVideoCodecs(Object.keys(FFMPEG_AVAILABLE.video.encoders));
             })
             .then(() => {
                 setLoad(false);
@@ -179,16 +175,7 @@ export default function ImageToWebm(props) {
     const [outWidth, setOutWidth] = useState(0);
     const [outHeight, setOutHeight] = useState(0);
     const [totalFrames, setTotalFrames] = useState(0);
-    /*
-    console.log(outFormat);
-    console.log(outFps);
-    console.log(vOutCodec);
-    console.log(aOutCodec);
-    console.log(vOutBit);
-    console.log(aOutBit);
-    console.log(outWidth);
-    console.log(outHeight);
-    */
+    
     const getOptions = (key_array) => {
         if (key_array === undefined)
             return [];
@@ -212,13 +199,12 @@ export default function ImageToWebm(props) {
         const sizeConst = width+'x'+height;
         const videoBitrate = Math.floor(vOutBit/1000)
         const audioBitrate = Math.floor(aOutBit/1000)
-        console.log(sizeConst);
         props.setProgressCancel(true);
         props.setIsProgress(true);
         props.setProgressTotal(totalFrames);
         ffmpegProcess(video, saveDir,
             {format:outFormat, fps:outFps, videoCodec:vOutCodec, videoBitrate:videoBitrate, audioCodec:aOutCodec, audioBitrate:audioBitrate, size:sizeConst},
-            {setProgress:setProgress, setProgressWindow:props.setProgressWindow, setProgressMessage:props.setProgressMessage}
+            {setProgress:setProgress, setProgressWindow:props.setProgressWindow, setProgressMessage:props.setProgressMessage, setProgressCancel:props.setProgressCancel}
         )
     }
     const fs = require('fs')
@@ -234,18 +220,18 @@ export default function ImageToWebm(props) {
     }
 
     const getSaveDir = () =>{
+        const postFix = getSync('postFix');
         const use = video.split('.')
         use.pop();
-        console.log(use);
         var text="";
         for(var usage of use){
             text = text+usage;
         }
         if(target==='Default'){
-            return text+'__Converted_by_WebImage.'+outFormat;
+            return text+postFix+'.'+outFormat;
         }
         else{
-            return target+'\\'+use.join().split('\\')[use.join().split('\\').length-1]+'__Converted_by_WebImage.'+outFormat;
+            return target+'\\'+use.join().split('\\')[use.join().split('\\').length-1]+postFix+'.'+outFormat;
         }
     }
 
@@ -344,7 +330,7 @@ export default function ImageToWebm(props) {
             onDragOver={dragOverListener}
             onDragEnter={(e) => { dragEnterListener(e, () => { setDrag(true) }) }}
             onDragLeave={(e) => { dragLeaveListner(e, () => { setDrag(false) }) }}
-            onClick={() => { setSizeSelectionClick(false) }}
+            onClick={() => {  }}
         >
         </div>
         </>
@@ -379,6 +365,7 @@ function InfoChild(props) {
 }
 
 function Selection(props) {
+    const index = props.title==="Audio Codec"?20:21;
     return (
         <>
             <div>
@@ -386,7 +373,7 @@ function Selection(props) {
                     <span>{props.title}</span>
                     <div className='hr-container'><hr /></div>
                 </div>
-                <Select className='select' classNamePrefix='select' style={{ option: styles => ({ ...styles, color: '#000000', overflow: 'hidden' }) }} defaultValue={{ value: props.value, label: props.value }} value={{ value: props.value, label: props.value }} options={props.options === undefined ? [{ value: props.value, label: props.value }] : props.options} onChange={props.setValue === undefined ? () => { } : (data) => { props.setValue(data.value) }} isDisabled={props.isDisabled === undefined ? false : props.isDisabled}></Select>
+                <Select className='select' classNamePrefix='select' styles={{container:styles=> ({ ...styles, zIndex:index}),option: styles => ({ ...styles, color: '#000000', overflow: 'hidden', zIndex:25 }) }} defaultValue={{ value: props.value, label: props.value }} value={{ value: props.value, label: props.value }} options={props.options === undefined ? [{ value: props.value, label: props.value }] : props.options} onChange={props.setValue === undefined ? () => { } : (data) => { props.setValue(data.value) }} isDisabled={props.isDisabled === undefined ? false : props.isDisabled}></Select>
             </div>
         </>
     )
@@ -402,7 +389,7 @@ function Input(props) {
         else {
             return (
                 <div className='delay-input-wrapper'>
-                <DelayInput forceNotifyByEnter={true} style={{zIndex:30, height: "68%", width: "93%", borderRadius: "5px", fontSize: "1rem", paddingLeft: '0.5rem' }} delayTimeout={500} type="number" min={0} value={props.value} onChange={(e) => { if (props.setValue === undefined) { return }; props.setValue(e.target.value); }} disabled={props.isDisabled === undefined ? false : props.isDisabled} />
+                <DelayInput forceNotifyByEnter={true} style={{zIndex:15, height: "68%", width: "93%", borderRadius: "5px", fontSize: "1rem", paddingLeft: '0.5rem' }} delayTimeout={500} type="number" min={0} value={props.value} onChange={(e) => { if (props.setValue === undefined) { return }; props.setValue(e.target.value); }} disabled={props.isDisabled === undefined ? false : props.isDisabled} />
                 </div>
             )
         }
