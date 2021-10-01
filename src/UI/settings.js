@@ -25,11 +25,11 @@ export const getSync = (key) => {
 }
 
 const INITIAL_STATE = {
-    postFix: new SettingObject('__Converted_by_WebImage', [String]),
-    backgroundAnimation: new SettingObject(true, [Boolean]),
-    defaultStorage: new SettingObject("Default", [String]),
-    usingVideoPreset: new SettingObject(false, [Boolean]),
-    videoPreset: new SettingObject('webm',[String])
+    postFix: new SettingObject('__Converted_by_WebImage', ['string']),
+    backgroundAnimation: new SettingObject(true, ['boolean']),
+    defaultStorage: new SettingObject("Default", ['string']),
+    usingVideoPreset: new SettingObject(false, ['boolean']),
+    videoPreset: new SettingObject('webm',['string']),
 }
 
 export const initialize = () => {
@@ -63,6 +63,9 @@ const checkInitProperties = () => {
 const checkInitTypes = () => {
     for (var key in INITIAL_STATE) {
         if (!INITIAL_STATE[key].format.includes(typeof (settings.getSync(key)))) {
+            console.log("Inital type:" + INITIAL_STATE[key].format)
+            console.log("Checking Type:" + typeof (settings.getSync(key)))
+            console.log("change:"+key)
             settings.setSync(key, INITIAL_STATE[key].value)
         }
     }
