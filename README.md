@@ -6,9 +6,7 @@ Gui Tool for optimizing / converting image/video files into web-friendly format
 
 
 
-![Logo](https://cloud.sutora.org/s/KW2mDqaTamZFTDj)
-
-<img src="https://cloud.sutora.org/s/KW2mDqaTamZFTDj" />
+<img src="./src/assets/readmelogo.png" height=250px />
     
 [![Build](https://img.shields.io/github/workflow/status/yusa-imit/WebImage/Build)]()
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
