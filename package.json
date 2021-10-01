@@ -32,7 +32,12 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "options":{
+              "maintainer": "Yusa imit",
+              "homepage": "https://github.com/yusa-imit/WebImage/"
+            }
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
