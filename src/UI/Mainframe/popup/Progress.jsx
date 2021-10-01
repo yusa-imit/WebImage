@@ -3,7 +3,20 @@ import './Progress.css';
 import ButtonComp from '../Component/ButtonComp.jsx';
 import { Line } from 'rc-progress'
 
+/**
+ * Progress popup component function
+ * @param {isProgress, progress, total, onCloseClick, onCancelClick, message, progressCancel} props 
+ * isProgress : boolean : state of progress is running
+ * progress : number : state of progress proceedings
+ * total : number : state of progress' total number
+ * onCloseClick : function : calls when close button is clicked
+ * onCancelClick : function : calls when cancel button is clicked
+ * message : any : console text value
+ * progressCancel : boolean : true when process is killed during progress
+ * @returns React Component
+ */
 export default function Progress(props) {
+    // css setters
     const cancelButtonColor = '#dc143c'
     const closeButtonColor ='#3cb712'
     const closeButtonFunction = props.onCloseClick
@@ -39,6 +52,7 @@ export default function Progress(props) {
     )
 }
 
+// css animation
 const RippleAnimationComp = (props) => {
     return (<>
         <div className={"loadingio-spinner-ripple-g8m4kw5bmbw"} ><div className="ldio-6pzj0lbar02">

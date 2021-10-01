@@ -1,6 +1,13 @@
 import React from 'react';
 import './DragGuide.css';
 
+
+/**
+ * Guide component for drag
+ * @param {drag} props 
+ * drag : boolean : when true, drag component will displayed
+ * @returns React Component
+ */
 export default function DragGuide(props){
     if (props.drag) {
         return (

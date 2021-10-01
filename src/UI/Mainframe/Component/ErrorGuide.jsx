@@ -2,6 +2,15 @@ import React from 'react';
 import './ErrorGuide.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
+/**
+ * error guide component
+ * @param {text, error, onClick} props 
+ * text: string : text for main error message
+ * error : boolean : if error is true, error popup is displayed
+ * onClick : function : handler for onClick
+ * @returns 
+ */
 export default function ErrorGuide(props) {
     const text = props.text === undefined ? "Error Occured" : props.text;
     const error = props.error === undefined ? false : props.error;
