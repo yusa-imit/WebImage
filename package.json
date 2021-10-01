@@ -1,7 +1,7 @@
 {
   "name": "webimage",
   "productName": "webimage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert media files into web-friendly formats.",
   "main": ".webpack/main",
   "scripts": {
