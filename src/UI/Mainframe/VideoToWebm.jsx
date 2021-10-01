@@ -272,6 +272,8 @@ export default function ImageToWebm(props) {
         props.setProgressCancel(true);
         props.setIsProgress(true);
         props.setProgressTotal(totalFrames);
+        console.log(video)
+        console.log(saveDir)
         ffmpegProcess(video, saveDir,
             {format:outFormat, fps:outFps, videoCodec:vOutCodec, videoBitrate:videoBitrate, audioCodec:aOutCodec, audioBitrate:audioBitrate, size:sizeConst},
             {setProgress:setProgress, setProgressWindow:props.setProgressWindow, setProgressMessage:props.setProgressMessage, setProgressCancel:props.setProgressCancel}
@@ -299,7 +301,7 @@ export default function ImageToWebm(props) {
         for(var usage of use){
             text = text+usage;
         }
-        if(target==='Default'){
+        if(target==='default'){
             return text+postFix+'.'+outFormat;
         }
         else{
