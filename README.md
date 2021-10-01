@@ -41,7 +41,7 @@ Gui Tool for optimizing / converting image/video files into web-friendly format
   
 ## Installation
 
-Get file from [Release Section](https://github.com/yusa-imit/WebImage/releases)
+Get file from [__Release Section__](https://github.com/yusa-imit/WebImage/releases)
 
 
 
@@ -134,7 +134,7 @@ using yarn
 
 
 
-Open new issue in this repository's [issues tab](https://github.com/yusa-imit/WebImage/issues)
+Open new issue in this repository's [__Issues tab__](https://github.com/yusa-imit/WebImage/issues)
 
 
 
