@@ -13,6 +13,7 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 14
+        registry-url: 'https://registry.npmjs.org'
     - name: install dependencies
       run: yarn install
     - name: publish
@@ -27,6 +28,7 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 14
+        registry-url: 'https://registry.npmjs.org'
     - name: install dependencies
       run: yarn install
     - name: publish
@@ -41,6 +43,7 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 14
+        registry-url: 'https://registry.npmjs.org'
     - name: install dependencies
       run: yarn install
     - name: publish
