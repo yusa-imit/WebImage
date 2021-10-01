@@ -8,8 +8,8 @@ const path = require('path');
 //global.ffmpegpath = require('ffmpeg-static').replace('app.asar', 'app.asar.unpacked')
 
 // [Deprecated]
-// const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
-const {BrowserWindow} = require('electron')
+const {setVibrancy, BrowserWindow } = require('electron-acrylic-window')
+//const {BrowserWindow} = require('electron')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -26,7 +26,8 @@ const createWindow = () => {
     frame:false,
     transparent:true,
     resizable:true,
-    //vibrancy:{theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false},
+    icon:path.join(__dirname, 'assets/png/icon.png'),
+    vibrancy:{theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false},
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -34,7 +35,7 @@ const createWindow = () => {
       webSecurity:false,
     }
   });
-  //mainWindow.setVibrancy({theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false})
+  mainWindow.setVibrancy({theme:'#FFFFFF00', effect:'blur', useCustomWindowRefreshMethod:true, maximumRefreshRate:60, disableOnBlur:false})
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   
