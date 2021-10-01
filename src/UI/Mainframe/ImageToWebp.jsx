@@ -8,13 +8,34 @@ import ImageViewer from './Component/ImageViewer.jsx'
 import FileNameComp from './Component/FileNameComp.jsx'
 import DragGuide from './Component/DragGuide.jsx';
 import { Line } from 'rc-progress'
+import {getSync} from '../settings.js'
 
+/**
+ * 
+ * @param {setIsProgress, setProgressWindow,
+ * setProgressTotal, setProgressMessage
+ * progressCancel, setProgressCancle, setError, setErrorText
+ * } props 
+ * setIsProgress : function : setter function of isProgress state, calls when progress start
+ * setProgressWindow : function : setter function of progressWindow state, calls when progress staged
+ * setProgressTotal : function : setter function of progressTotal state, calls when set total progress' length
+ * setProgressMessage : function : setter function of progressMessage state, calls when change console message of progress pop-up
+ * progressCancel : boolean : value of progressCancel state
+ * setProgressCancel : function : setter function of setProgressCancel state, calls when progress is cancelled
+ * setError : function : setter function of error state, calls when error occured
+ * setErrorText : function : setter function of errorText state, calls when change console message of error pop-up
+ * @returns 
+ */
 export default function ImageToWebp(props) {
+    // state info : contains information of image
     const [info, setInfo] = useState([]);
+    // state convertInto : contains output format of converted image
     const [convertInto, setConvertInto] = useState('webp');
-    //Get Remote for dialog
+    // Get Remote for dialog
     const dialog = require('electron').remote.dialog;
+    // Formats available
     const availableFormat = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'tiff', 'gif', 'heif']
+    // All buttons
     const buttons = [{ 'title': 'JPEG', 'data': 'jpeg' },
     { 'title': 'PNG', 'data': 'png' },
     { 'title': 'WEBP', 'data': 'webp' },
@@ -22,6 +43,7 @@ export default function ImageToWebp(props) {
     { 'title': 'TIFF', 'data': 'tiff' },
     { 'title': 'GIF', 'data': 'gif' },
     { 'title': 'HEIF', 'data': 'heif' }]
+    // setter function of buttons
     const setButtons = () => {
         return (
             buttons.map((button) => (
@@ -29,6 +51,7 @@ export default function ImageToWebp(props) {
             ))
         );
     }
+    // confirm its format is correct
     const formatConfirm = (f) => {
         var extension = f.split('.')[f.split('.').length - 1];
         if (!availableFormat.includes(extension)) {
@@ -38,13 +61,21 @@ export default function ImageToWebp(props) {
             return true;
         }
     }
+    // state drag : when true, file drag is enabled
     const [drag, setDrag] = useState(false);
+    // state progress : progress
+    // depleted?
+    // todo : delete depleted state
     const [progress, setProgress] = useState(0);
+
+    // calls when progress is proceeded
     const increaseProgress = () => {
         setProgress(prevProg => prevProg + 1);
         props.setProgressWindow(prevProg=>prevProg + 1);
         props.setProgressMessage("Processing Images")
     }
+
+    // files state : array state that contains all files to convert
     const [files, setFiles] = useState([]);
     //Only Image Variables
     const fileFilter = [{ name: 'Images', extensions: availableFormat }]
@@ -71,21 +102,26 @@ export default function ImageToWebp(props) {
                 console.log(e);
             })
     }
-    const [target, setTarget] = useState('Default');
+    // state target : output directory
+    const [target, setTarget] = useState(getSync('defaultStorage'));
+    // get target directory from dialog
     const getTargetDirectory = () => {
         const dir = dialog.showOpenDialogSync({
             properties: ['openDirectory']
         })
         if (dir === undefined) {
-            setTarget('Default');
+            setTarget(getSync('defaultStorage'));
         }
         else {
             setTarget(dir);
         }
     }
+    // convert function
     const convert = (f) => {
         sharpConvertAndExport(f, convertInto, target, setInfo, increaseProgress)
     }
+
+    // convert everything in files state
     const convertAll = () => {
         if(files.length===0){
             return;
@@ -105,12 +141,17 @@ export default function ImageToWebp(props) {
             }
         }
     }
+
+    // state initializer
     const initialize = () => {
         setInfo([]);
         setFiles([]);
         setProgress(0);
     }
+
+    // ref for scrolling
     const scroll = useRef();
+    // if it is processing, disable buttons
     const [working, setWorking] = useState(false);
     const setConvertButton = () => {
 
@@ -125,6 +166,7 @@ export default function ImageToWebp(props) {
             )
         }
     }
+    //useEffect for progress working
     useEffect(() => {
         console.log(progress);
         if (progress === files.length) {
@@ -216,6 +258,11 @@ export default function ImageToWebp(props) {
     )
 }
 
+
+/**
+ *  File System Functions
+ * 
+ */
 function isDirectory(f) {
     var fs = require('fs');
     return fs.statSync(f).isDirectory();
