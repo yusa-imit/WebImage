@@ -198,7 +198,7 @@ export default function ImageOptimizer(props) {
                 <div className='img-opt-size'>
                     <div className='title-container'><h5> Size </h5> <TooltipText text={'Program will convert image fit to the size you want to set. \n Size factor will always working.'} /></div>
                     <div className='input-wrapper'>
-                        <DelayInput delayTimeout={500} type="number" min={1} value={parseFloat(parseFloat(size).toFixed(1))} onChange={(e) => { setSize(e.target.value); console.log(size) }} />
+                        <DelayInput  forceNotifyByEnter={true} delayTimeout={500} type="number" min={1} value={parseFloat(parseFloat(size).toFixed(1))} onChange={(e) => { setSize(e.target.value); console.log(size) }} />
                         <div className={sizeSelectionClick === false ? 'select' : 'select-action'} onClick={() => { setSizeSelectionClick(sizeSelectionClick === true ? false : true) }}>
                             <p>{sizeSelection}</p>
                             <FontAwesomeIcon className='chevron-down' icon={faChevronDown} />
@@ -222,7 +222,7 @@ export default function ImageOptimizer(props) {
                 <div className='img-opt-scale'>
                     <div className='title-container'><h5>Image Scale </h5> <TooltipText text={'You can scale your image. \n If image scale is not 100% Program will ignore adjusted numbers of width and height.'} /></div>
                     <div className='labeled-wrapper'>
-                        <DelayInput delayTimeout={500} type="number" min={0} max={999} value={scale.toFixed(0)} step='' onChange={(e) => { setScale(parseInt(e.target.value)) }} />
+                        <DelayInput forceNotifyByEnter={true}delayTimeout={500} type="number" min={0} max={999} value={scale.toFixed(0)} step='' onChange={(e) => { setScale(parseInt(e.target.value)) }} />
                         <h3>%</h3>
                     </div>
                 </div>
