@@ -11,6 +11,8 @@ Gui Tool for optimizing / converting image/video files into web-friendly format
     
 [![Build](https://img.shields.io/github/workflow/status/yusa-imit/WebImage/Build)]()
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![Code Quality Score](https://www.code-inspector.com/project/29250/score/svg)]()
+[![Code Grade](https://www.code-inspector.com/project/29250/status/svg)]()
 
 
   
