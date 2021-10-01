@@ -21,6 +21,17 @@ Gui Tool for optimizing / converting image/video files into web-friendly format
 ![Visual Studio](https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+
+## Index
+
+- [Features](#Features)
+- [Installation](#Installation)
+- [First Look](#First-Look)
+- [For development](#For-Development)
+- [Contact](#Contact)
+- [__!important Additional Licence__](#Additional-Licence)
+
+
 ## Features
 
 - Optimize image file
@@ -35,26 +46,32 @@ Get file from [Release Section](https://github.com/yusa-imit/WebImage/releases)
 
 
 ## First Look
-
+#### Ocean-ish image in backgroun is not included. It's just my desktop background
 
 ### Image Optimize
 
 
-<img src='./readme_images/1.png" height=250px />
+<img src="./readme_images/1.png" height=350px />
           
           
 ### Image Convert
           
           
-<img src='./readme_images/2.png" height=250px />          
+<img src="./readme_images/3.png" height=350px />     
+
+
+
 ### Video Convert
           
           
-<img src='./readme_images/3.png" height=250px />          
+<img src="./readme_images/2.png" height=350px />    
+
+
+
 ### Settings
           
           
-<img src='./readme_images/4.png" height=250px />          
+<img src="./readme_images/4.png" height=350px />          
           
 
 
@@ -111,3 +128,17 @@ using yarn
 ```bash
   yarn run publish
 ```
+
+
+## Contact
+
+
+
+Open new issue in this repository's [issues tab](https://github.com/yusa-imit/WebImage/issues)
+
+
+
+## Additional Licence
+
+This program is using FFMPEG module for processing video.
+If you are going to use MOV preset or other licensed library, you need to see the [LICENSE from FFMPEG](https://github.com/FFmpeg/FFmpeg/blob/master/LICENSE.md)
