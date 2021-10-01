@@ -15,6 +15,7 @@ import { Line } from 'rc-progress'
  * progressCancel : boolean : true when process is killed during progress
  * @returns React Component
  */
+
 export default function Progress(props) {
     // css setters
     const cancelButtonColor = '#dc143c'
