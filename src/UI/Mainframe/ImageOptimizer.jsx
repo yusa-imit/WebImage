@@ -11,11 +11,13 @@ import TooltipText from './Component/TooltipText.jsx';
 import DragGuide from './Component/DragGuide.jsx';
 
 
-//
-// ImageOptimizer.jsx
-//
-// Screen for Image Optimizer
-// props : none
+/**
+ * screen for image optimizer
+ * @param {setError, setErrorText} props 
+ * setError : function : setter function of error popup
+ * setErrorText : function : setter function of error popup console text
+ * @returns React Component
+ */
 export default function ImageOptimizer(props) {
     const { promisify } = require('util');
     //Get Remote for dialog
