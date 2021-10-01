@@ -1,6 +1,6 @@
 {
   "name": "webimage",
-  "productName": "WebImage",
+  "productName": "webimage",
   "version": "1.0.0",
   "description": "Convert media files into web-friendly formats.",
   "main": ".webpack/main",
@@ -33,7 +33,7 @@
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "options":{
+            "options": {
               "maintainer": "Yusa imit",
               "homepage": "https://github.com/yusa-imit/WebImage/"
             }
@@ -42,6 +42,17 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {}
+        }
+      ],
+      "publishers":[
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository":{
+              "owner":"yusa-imit",
+              "name":"WebImage"
+            }
+          }
         }
       ],
       "plugins": [
@@ -82,6 +93,7 @@
     "style-loader": "^2.0.0"
   },
   "dependencies": {
+    "@electron-forge/publisher-github": "^6.0.0-beta.61",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
