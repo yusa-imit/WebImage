@@ -10,8 +10,39 @@ import ButtonComp from './Component/ButtonComp.jsx';
 import { dragEnterListener, dragLeaveListner, dragOverListener, dropEventListener } from './dragAndDropListners.js'
 import DragGuide from './Component/DragGuide.jsx'
 import {getSync} from '../settings.js';
+
+
+/**
+ * 
+ * @param {setIsProgress, setProgressWindow,
+ * setProgressTotal, setProgressMessage
+ * progressCancel, setProgressCancle, setError, setErrorText
+ * } props 
+ * setIsProgress : function : setter function of isProgress state, calls when progress start
+ * setProgressWindow : function : setter function of progressWindow state, calls when progress staged
+ * setProgressTotal : function : setter function of progressTotal state, calls when set total progress' length
+ * setProgressMessage : function : setter function of progressMessage state, calls when change console message of progress pop-up
+ * progressCancel : boolean : value of progressCancel state
+ * setProgressCancel : function : setter function of setProgressCancel state, calls when progress is cancelled
+ * setError : function : setter function of error state, calls when error occured
+ * setErrorText : function : setter function of errorText state, calls when change console message of error pop-up
+ * @returns 
+ */
 export default function ImageToWebm(props) {
+    // Variables : FFMPEG_AVAILABLE : get every available informations from FFMPEG
     let FFMPEG_AVAILABLE;
+    /**
+     * Data pre-processor for FFMPEG_AVAILABLE
+     * @param {*} data 
+     * data coming from FFMPEG function
+     * @returns Object
+     * {
+     * audio : Object{codecs: Object{available audio codecs, encoders:Object{available audio encoders}}},
+     * video : Object{codecs: Object{available video codecs, encoders:Object{available video encoders}}}, 
+     * encodableForamts: Object{encodable formats},
+     * decodableFormats: Object{decodable formats}
+     * }
+     */
     const dataPreprocessing = (data) => {
         let audio = { "codecs": {}, "encoders": {} };
         let video = { "codecs": {}, "encoders": {} };
@@ -41,9 +72,14 @@ export default function ImageToWebm(props) {
         }
         return { "audio": audio, "video": video, "encodableFormats": encodableFormats, "decodableFormats": decodableFormats };
     }
+    // remote dialog
     const dialog = require('electron').remote.dialog;
+    // available formats state from FFMPEG_AVAILABLE
+    // For making fileFilter for dialog
     const [availableFormat, setAvailableFormat] = useState(undefined);
+    // dialog file filter
     const fileFilter = [{ name: 'Videos', extensions: availableFormat }]
+    // get video file from dialog
     const getFile = () => {
         dialog.showOpenDialog({ filters: fileFilter, properties: ['openFile', 'showHiddenFiles',] })
             .then(
@@ -62,7 +98,9 @@ export default function ImageToWebm(props) {
                 console.log(e);
             })
     }
-    const [target, setTarget] = useState('Default');
+    // output converted video file directory
+    const [target, setTarget] = useState(getSync('defaultStorage'));
+    // get target directory from dialog
     const getTargetDirectory = () => {
         const dir = dialog.showOpenDialogSync({
             properties: ['openDirectory']
@@ -74,6 +112,7 @@ export default function ImageToWebm(props) {
             setTarget(dir);
         }
     }
+    // get video informations from ffmpeg function
     const getVideoInfo = (dir) => {
         setLoadText("Loading Video Informations");
         setLoad(true);
@@ -94,11 +133,10 @@ export default function ImageToWebm(props) {
                 }
             }
             setLoad(false);
-
-
-
         })
     }
+    // check this file has video properties
+    // because data streams have both audio and video informations
     const isVideoProperty = (data) => {
         if (data.codec_type === "video") {
             return true;
@@ -107,26 +145,44 @@ export default function ImageToWebm(props) {
             return false;
         }
     }
+    // state setter for video informations
     const setVideoInfo = (data) => {
+        const isUsingVideoPreset = getSync('usingVideoPreset');
         setVCodec(data.codec_name);
         setVBit(data.bit_rate);
         setHeight(data.height);
         setWidth(data.width);
         setFps(parseInt(data.r_frame_rate));
+        if(isUsingVideoPreset){
+            const preset = getSync('videoPreset');
+            setOutFormat(preset);
+            setVOutCodec(presets[preset].video);
+            setAOutCodec(presets[preset].audio);
+        }
+        else{
+            setOutFormat('webp');
+            setVOutCodec('libvpx-vp9');
+            setAOutCodec('libopus')
+        }
         setVOutBit(data.bit_rate);
         setOutHeight(data.height);
         setOutWidth(data.width);
         setOutFps(parseInt(data.r_frame_rate));
         setTotalFrames(parseInt(data.nb_frames));
     }
+    // state setter for audio informations
     const setAudioInfo = (data) => {
         setACodec(data.codec_name);
         setABit(data.bit_rate);
         setAOutBit(data.bit_rate);
     }
+    // state for encodableFormats from FFMPEG_AVAILABLE
     const [encodableFormats, setEncodableFormats] = useState('');
+    // state for audio codecs from FFMPEG_AVAILABLE
     const [audioCodecs, setAudioCodecs] = useState('');
+    // state for video codecs from FFMPEG_AVAILABLE
     const [videoCodecs, setVideoCodecs] = useState('');
+    // State setter for format, codecs
     const setFfmpegInfo = () => {
         getFfmpegAvailables().then(data => {
             FFMPEG_AVAILABLE = dataPreprocessing(data);
@@ -141,9 +197,11 @@ export default function ImageToWebm(props) {
                 setLoad(false);
             })
     }
+    // state load : true when it is loading status
     const [load, setLoad] = useState(true);
+    // state loadText : calls when change loading pop-up's console changed
     const [loadText, setLoadText] = useState("Loading Initial FFMPEG Data");
-
+    // loading screen setter
     const LoadingScreen = () => {
         if (load) {
             return (
@@ -157,6 +215,10 @@ export default function ImageToWebm(props) {
         }
     }
 
+    // presets for video converting
+    const presets = require('./encoding_preset.json');
+
+    // states for inputs
     const [video, setVideo] = useState('')
     const [format, setFormat] = useState('');
     const [fps, setFps] = useState(0);
@@ -166,16 +228,20 @@ export default function ImageToWebm(props) {
     const [aBit, setABit] = useState(0);
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
-    const [outFormat, setOutFormat] = useState('webm');
+    const [outFormat, setOutFormat] = useState('');
     const [outFps, setOutFps] = useState(0);
-    const [vOutCodec, setVOutCodec] = useState('libvpx-vp9');
-    const [aOutCodec, setAOutCodec] = useState('libopus');
+    const [vOutCodec, setVOutCodec] = useState('');
+    const [aOutCodec, setAOutCodec] = useState('');
     const [vOutBit, setVOutBit] = useState(0);
     const [aOutBit, setAOutBit] = useState(0);
     const [outWidth, setOutWidth] = useState(0);
     const [outHeight, setOutHeight] = useState(0);
+
+    // state for video total frames numbers
+    // used for calculating progress
     const [totalFrames, setTotalFrames] = useState(0);
     
+    // set options for selector component
     const getOptions = (key_array) => {
         if (key_array === undefined)
             return [];
@@ -185,12 +251,16 @@ export default function ImageToWebm(props) {
         }
         return data;
     }
+    // progress state
     const [progress, setProgress] = useState(0)
+    // depleted function
     const saveProgress = (num)=>{
         setProgress(num)
         props.setProgressWindow(num)
         props.setProgressMessage("Processing frame number "+ num);
     }
+
+    // on main convert button clicked
     const onConvertClick = () =>{
         if(!isFileExists(video)){
             return;
@@ -207,6 +277,7 @@ export default function ImageToWebm(props) {
             {setProgress:setProgress, setProgressWindow:props.setProgressWindow, setProgressMessage:props.setProgressMessage, setProgressCancel:props.setProgressCancel}
         )
     }
+    // file system function
     const fs = require('fs')
     const isFileExists = ()=>{
         try{
@@ -219,6 +290,7 @@ export default function ImageToWebm(props) {
         return false;
     }
 
+    // calculate save target directory
     const getSaveDir = () =>{
         const postFix = getSync('postFix');
         const use = video.split('.')
@@ -235,12 +307,17 @@ export default function ImageToWebm(props) {
         }
     }
 
+    // drag state : when true, file drag is enabled
     const [drag, setDrag] = useState(false);
 
+    // useEffect for progressing
+    // detects cancel progress button is pressed
     useEffect(()=>{
        if(props.progressCancel===false && progress!==0)
             killProcess();
     }, )
+
+    // useEffect for first loading
     useEffect(() => {
         setFfmpegInfo();
     }, [FFMPEG_AVAILABLE])
@@ -337,8 +414,16 @@ export default function ImageToWebm(props) {
     )
 }
 
+
 import Select from 'react-select';
 import { traceProcessWarnings } from 'process';
+
+/**
+ * video information childs
+ * @param {*} props 
+ * props contains every codec value refer line 351
+ * @returns React component
+ */
 
 function InfoChild(props) {
 
@@ -364,6 +449,15 @@ function InfoChild(props) {
     )
 }
 
+/**
+ * Selection component
+ * @param {value, options, setValue, isDisabled} props 
+ * value : string : value of selector
+ * options : array[string] : array of selector options
+ * setValue : function : handler for onchange selection
+ * isDisabled : boolean : when it is true, components disabled 
+ * @returns React Component
+ */
 function Selection(props) {
     const index = props.title==="Audio Codec"?20:21;
     return (
@@ -379,6 +473,15 @@ function Selection(props) {
     )
 }
 
+
+/**
+ * 
+ * @param {value, setValue, isDisabled} props 
+ * value : string, number : value of Input component
+ * setValue : function : handler for input onchange event
+ * isDisabled : boolean : when it's true, components disabled
+ * @returns 
+ */
 function Input(props) {
     const setForm = () => {
         if (props.isDisabled === true) {
@@ -408,6 +511,7 @@ function Input(props) {
     )
 }
 
+// Lier component for input
 function LooksLikeInput(props) {
     return (
         <div className='looks-like-input'>
@@ -415,6 +519,8 @@ function LooksLikeInput(props) {
         </div>
     )
 }
+
+//fs function
 
 function isDirectory(f) {
     var fs = require('fs');
