@@ -1,0 +1,71 @@
+.settings-wrapper{
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    position:relative;
+    padding:20px;
+    color: #fff;
+}
+
+.settings-list{
+    width: 100%;
+    height:fit-content;
+}
+
+.settings-list h6, .settings-list h5{
+    margin-block-start: 0.2rem;
+    margin-block-end: 0rem;
+}
+
+.settings-list h4{
+    margin-block-start: 0.2rem;
+    margin-block-end: 0.2rem;
+    font-weight: 500;
+}
+
+.settings-child{
+    width: 100%;
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-child hr{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.boolean-child{
+    width: calc(100% - 20px);
+    display: flex;
+    flex-direction:row;
+    padding-right: 20px;
+}
+
+.boolean-child h4{
+    justify-self: flex-start;
+    flex: 1;
+}
+
+.boolean-child .boolean-switch{
+    justify-self: flex-end;
+}
+
+.selectbar-child h4{
+    margin-bottom: 0.5rem;
+}
+.text-child .text-field{
+    margin-top: 0.5rem;
+    width: 80%;
+    height: 40%;
+}
+
+.buttongroup-child h4{
+    margin-bottom: 0.5rem;
+}
+
+.buttongroup-child .buttons-container{
+    display: grid;
+    width: calc(100% - 20px);
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 0.5rem;
+}
